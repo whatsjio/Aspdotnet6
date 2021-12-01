@@ -1,9 +1,22 @@
+using AuthServer;
+using IdentityServer4.Validation;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddIdentityServer()
+            .AddDeveloperSigningCredential()
+            .AddInMemoryApiResources(Config.GetApiResources())//配置类定义的授权范围
+            .AddInMemoryApiScopes(Config.GetApiScopes())
+            .AddInMemoryIdentityResources(Config.GetIdentityResources())
+            .AddInMemoryClients(Config.GetClients()); //配置类定义的授权客户端
+
+builder.Services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
+app.UseIdentityServer();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -20,6 +33,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+
+
 app.MapRazorPages();
+
+
 
 app.Run();
