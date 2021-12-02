@@ -1,7 +1,18 @@
 using AuthServer;
+using IdentityServer4.Services;
 using IdentityServer4.Validation;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.WithOrigins("http://localhost:5006").AllowAnyHeader().AllowAnyMethod();
+                      });
+});
 
 builder.Services.AddIdentityServer()
             .AddDeveloperSigningCredential()
@@ -11,6 +22,7 @@ builder.Services.AddIdentityServer()
             .AddInMemoryClients(Config.GetClients()); //配置类定义的授权客户端
 
 builder.Services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
+builder.Services.AddTransient<IProfileService, ProfileService>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
@@ -30,6 +42,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthorization();
 
