@@ -1,0 +1,121 @@
+* {
+	margin: 0;
+	padding: 0; 
+}
+body {
+	background: #fff;
+}
+.clearfix:after {
+	display: block;
+	clear: both;
+	content: "";
+	height: 0;
+	visibility: hidden;
+}
+.wrapper {
+	width: 100%;
+}
+.top {
+	display: block;
+	width: 100%;
+	background: #349d98;
+	height: 160px;
+}
+.top img {
+	position: absolute;
+	left: 50%;
+	top: 30px;
+	transform: translateX(-50%);
+	display: block;
+	/*width: 306px;
+	height: 38px;*/
+}
+.content {
+	padding-top: 80px;
+	padding-bottom: 20px;
+	position: relative;
+}
+.content .user_img {
+	display: block;
+	width: 130px;
+	height: 130px;
+	position: absolute;
+	top: -70px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 8px;
+	background: #fff;
+	border-radius: 50%;
+}
+.content .user_img img {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+.content .user_info {
+	text-align: center;
+	padding-top: 20px;
+	font-size: 14px;
+	color: #349d98;
+}
+.content .text_box {
+	text-align: center;
+	margin-top: 42px;
+}
+.content .text_box > input,
+.content .text_box .verfify {
+	display: block;
+	width: 380px;
+	height: 38px;
+	border: 1px solid #ddd;
+	margin: 20px 0;
+	margin: 0 auto;
+	margin-bottom: 35px;
+	padding-left: 10px;
+	outline: none;
+}
+.content .text_box .verfify {
+	border: none;
+	overflow: hidden;
+	height: 40px;
+	margin-bottom: 0;
+}
+.content .text_box .verfify input{
+	margin-left: -10px;
+	margin-bottom: 10px;
+	width: 270px;
+	height: 38px;
+	border: 1px solid #ddd;
+	float: left;
+	padding-left: 10px;
+	outline: none;
+}
+.content .text_box .verfify  img {
+	display: inline-block;
+	width: 90px;
+	height: 38px;
+	float: right;
+}
+.login_btn {
+	display: block;
+	margin-top: 20px;
+	height: 38px;
+}
+.login_btn a {
+	display: block;
+	width: 100%;
+	margin: 0 auto;
+	height: 100%;
+	color: #fff;
+	font-size: 14px;
+	border-radius: 20px;
+	background-color: rgba(255,255,255,.1);
+	text-align: center;
+	line-height: 38px;
+    border:1px #fff solid;
+	text-decoration: none;
+}
+    .login_btn a:hover {
+        background-color: rgba(255,255,255,.3);
+        border: 2px #fff solid;
+    }

@@ -22,6 +22,7 @@ namespace AlpathAny
         {
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             builder.RegisterAssemblyTypes(GetAssemblyByName("OperateService")).Where(a => a.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerDependency();
+            builder.RegisterAssemblyTypes(GetAssemblyByName("MiddlewareService")).Where(a => a.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerDependency();
             builder.RegisterBuildCallback(container => _container = (IContainer)container);
         }
 
