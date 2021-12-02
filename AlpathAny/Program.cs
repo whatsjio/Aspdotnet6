@@ -39,6 +39,12 @@ builder.Services.AddControllersWithViews().AddControllersAsServices();
 // Add services to the container.
 builder.Services.AddRazorPages();
 
+builder.Services.AddAuthentication("Bearer").AddIdentityServerAuthentication(x =>
+{
+    x.Authority = "http://localhost:5006";//鉴权服务地址
+    x.RequireHttpsMetadata = false;
+    x.ApiName = "api";//鉴权范围
+});
 
 var app = builder.Build();
 
@@ -71,6 +77,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();
