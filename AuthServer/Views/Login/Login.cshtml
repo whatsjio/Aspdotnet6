@@ -1,6 +1,201 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewBag.Title = "登录";
 }
-<h1>登录</h1>
+<style type="text/css">
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+    }
+
+    #app {
+        width: 100%;
+        height: 100%;
+    }
+
+    .login {
+        width: 100%;
+        height: 100%;
+        background-image: url(/imgs/login_bg.jpg);
+        background-size: cover;
+        background-position: center;
+        position: relative;
+    }
+
+    @@keyframes mymove {
+        from {
+            top: 0;
+        }
+
+        to {
+            top: 50%;
+        }
+    }
+
+    @@-webkit-keyframes mymove /*Safari and Chrome*/ {
+        from {
+            top: 0;
+        }
+
+        to {
+            top: 50%;
+        }
+    }
+
+    .login-con {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        width: 460px;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, .2);
+        -webkit-animation: mymove 1.5s; /* Safari 和 Chrome */
+    }
+
+    .ivu-card {
+        border-radius: 0;
+    }
+
+    .ivu-card-head {
+        padding: 30px 80px 15px;
+        border-bottom: 0;
+        text-align: center;
+    }
+
+        .ivu-card-head p {
+            height: 40px;
+            line-height: 40px;
+            font-size: 24px;
+            color: #52619d;
+        }
+
+    .ivu-card-body {
+        padding: 0 80px 40px;
+    }
+
+    .ivu-form-item {
+        margin: 0;
+        border-bottom: 1px solid #9ca1ba;
+    }
+
+    .ivu-form-item-required .ivu-form-item-label:before {
+        display: none;
+    }
+
+    .ivu-form .ivu-form-item-label {
+        padding: 22px 12px 22px 0;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .ivu-form-item .ivu-input {
+        width: 100%;
+        margin: 13px 0;
+        border: 0;
+        font-size: 14px;
+        outline: 0;
+        box-shadow: 0 0 0px 1000px white inset; /* 覆盖chrome表单input底色 */
+        -webkit-text-fill-color: #333; /* 覆盖chrome表单input底色 */
+    }
+
+    .ivu-form-item-error .ivu-input:focus {
+        box-shadow: none;
+    }
+
+    .ivu-card-body .ivu-btn {
+        height: 40px;
+        margin: 40px 0 20px;
+        border: 0;
+        border-radius: 0;
+        font-size: 16px;
+        background: #212252;
+    }
+
+    .login-tip {
+        font-size: 10px;
+        text-align: center;
+        color: #c3c3c3;
+    }
+</style>
+
+
+<div id="app">
+    <template>
+        <div class="login">
+            <div class="login-con">
+                <Card icon="log-in" title="登录" :bordered="false">
+                    <div class="form-con">
+                        <i-form ref="form" label-position="left" :label-width="80" v-bind:model="form" v-bind:rules="ruleInline" @@keydown.enter.native="handleSubmit('form')">
+                            <form-item label="账 号">
+                                <i-input v-model="form.userName" placeholder="请输入账号"></i-input>
+                            </form-item>
+                            <form-item label="密 码">
+                                <i-input type="password" v-model="form.password" placeholder="请输入密码"></i-input>
+                            </form-item>
+                            <i-button @@click="handleSubmit('form')" type="primary" long>登 录</i-button>
+                        </i-form>
+                    </div>
+                </Card>
+            </div>
+        </div>
+    </template>
+</div>
+
+<script type="text/javascript">
+    var v = new Vue({
+        el: "#app",
+        data: {
+            form: {
+                userName: '',
+                password: ''
+            },
+            ruleInline: {
+                userName: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' }
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                    { type: 'string', min: 6, message: '密码长度最少6位', trigger: 'blur' }
+                ]
+            }
+        },
+        mounted: function () {
+
+        },
+        methods: {
+           handleSubmit(name) {
+                if (!this.form.userName) {
+                    return LayerTools.msg('请输入账号');
+                }
+                if (!this.form.password) {
+                    return LayerTools.msg('请输入密码');
+                }
+                let configs = {
+                    method: 'post',
+                    url: '/connect/token',
+                    data: {
+                        client_id: 'client',
+                        client_secret: 'secret',
+                        grant_type: 'password',
+                        userName:this.form.userName,
+                        password: this.form.password
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                };
+                httpaxios.request(configs).then(success=>{
+                    //请求成功
+
+
+                },failed=>{
+                    let errormessage=failed.data.error_description;
+                    //请求失败
+                    iex.notify.error("登录失败:"+errormessage);
+                });
+            }
+        }
+    });
+</script>
