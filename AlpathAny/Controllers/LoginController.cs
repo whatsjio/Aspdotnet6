@@ -18,5 +18,16 @@ namespace AlpathAny.Controllers
             var result=await Task.FromResult(a);
             return result;
         }
+
+
+        /// <summary>
+        /// 主页
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Index()
+        {
+            return View();
+        }
+
     }
 }

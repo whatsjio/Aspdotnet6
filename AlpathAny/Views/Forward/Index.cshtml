@@ -1,0 +1,18 @@
+﻿
+
+<h1>跳转中。。。</h1>
+
+<script type="text/javascript">
+    let authorl='@ViewBag.Authorurl';
+    window.addEventListener('message',function(){
+        console.log(event);
+    if (event.origin ===authorl){
+        const { lname } = event.data;
+        const { tokens } = event.data;
+        localStorage.setItem(lname,tokens);
+        localStorage.setItem('keyname',lname);
+    }
+    },false);
+    
+
+</script>

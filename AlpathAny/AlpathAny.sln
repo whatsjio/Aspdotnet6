@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tool", "..\Tool\Tool.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MiddlewareService", "..\MiddlewareService\MiddlewareService.csproj", "{42625A95-8206-4643-84F6-ACE6310A311A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthServer", "..\AuthServer\AuthServer.csproj", "{B49B3557-AEEF-4B03-9C97-F614282D3500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthServer", "..\AuthServer\AuthServer.csproj", "{B49B3557-AEEF-4B03-9C97-F614282D3500}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

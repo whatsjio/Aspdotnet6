@@ -15,6 +15,8 @@ var connectstr = movieApiKey;
     //builder.Configuration.GetConnectionString("AlanConnection");
 
 ConfigurationValue = builder.Configuration["testone"];
+//加载鉴权地址
+Appraisalurl = builder.Configuration["Appraisalurl"];
 
 //builder.Services.AddDbContext<DbTContext>(options => options.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion));
 //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -41,7 +43,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddAuthentication("Bearer").AddIdentityServerAuthentication(x =>
 {
-    x.Authority = "http://localhost:5006";//鉴权服务地址
+    x.Authority = Appraisalurl;//鉴权服务地址
     x.RequireHttpsMetadata = false;
     x.ApiName = "api";//鉴权范围
 });
@@ -90,7 +92,7 @@ app.UseEndpoints(endpoints =>
     );
     endpoints.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Login}/{action=Login}/{id?}");
+        pattern: "{controller=Forward}/{action=Index}/{id?}");
 });
 
 app.Run();
@@ -100,4 +102,8 @@ partial class Program {
 
     public static string? ConfigurationValue { get; private set; }
 
+    /// <summary>
+    /// 鉴权地址
+    /// </summary>
+    public static string Appraisalurl { get; private set; }
 }

@@ -141,6 +141,7 @@
             </div>
         </div>
     </template>
+    <iframe id="rect-iframe" :src="tocatchurl" style="display:none;"></iframe>
 </div>
 
 <script type="text/javascript">
@@ -151,6 +152,8 @@
                 userName: '',
                 password: ''
             },
+            redirecturl:'',
+            tocatchurl:'',
             ruleInline: {
                 userName: [
                     { required: true, message: '请输入用户名', trigger: 'blur' }
@@ -162,7 +165,10 @@
             }
         },
         mounted: function () {
-
+            let getreurl=getUrlParam('redirecturl');
+            //获取跳转地址
+            this.redirecturl=(getreurl&&decodeURIComponent(getreurl))||'';
+            this.tocatchurl=(this.redirecturl&&(new URL(this.redirecturl).origin))||'';
         },
         methods: {
            handleSubmit(name) {
@@ -188,8 +194,14 @@
                 };
                 httpaxios.request(configs).then(success=>{
                     //请求成功
-
-
+                    if(!this.redirecturl){
+                    iex.notify.warning("未设置跳转地址！");
+                    return;
+                    }
+                    const rectIframe = document.getElementById('rect-iframe');
+                    rectIframe.contentWindow.postMessage({lname: this.form.userName,tokens:success.data.access_token}, this.tocatchurl);
+                    iex.notify.success('登录成功！');
+                    window.location.href=this.redirecturl;
                 },failed=>{
                     let errormessage=failed.data.error_description;
                     //请求失败
