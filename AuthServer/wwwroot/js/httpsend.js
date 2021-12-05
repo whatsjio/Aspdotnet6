@@ -26,7 +26,8 @@ class NewAxios {
             // 在这里添加loading
             // 配置token
             config.headers.AuthorizationToken = 'tests';
-
+            //默认返回json格式
+            config.responseType = 'json';
             if (config.headers['Content-Type'] && config.headers['Content-Type'] =='application/x-www-form-urlencoded') {
                 config.data = Qs.stringify(config.data);
             }
@@ -44,6 +45,8 @@ class NewAxios {
                     case '403':
                         // todo: handler server forbidden error
                         break;
+                    case '400':
+                        break;
                     // todo: handler other status code
                     default:
                         break;
@@ -52,7 +55,7 @@ class NewAxios {
             }
             if (!window.navigator.online) { // 断网处理
                 // todo: jump to offline page
-                return '连接断开';
+                console.log('异常：连接断开');
             }
             return Promise.reject(err);
         });
@@ -68,7 +71,8 @@ class NewAxios {
         };
         // 配置拦截器，支持根据不同url配置不同的拦截器。
         this.setInterceptors(instance, options.url);
-        return instance(config); // 返回axios实例的执行结果
+        return instance(config);
+
     }
 }
 
