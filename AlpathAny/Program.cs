@@ -3,6 +3,9 @@ using Autofac;
 using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Extensions.Logging;
+using NLog.Web;
 using OperateService.Iservice;
 using OperateService.ITableService;
 using OperateService.Service;
@@ -21,6 +24,16 @@ Appraisalurl = builder.Configuration["Appraisalurl"];
 //builder.Services.AddDbContext<DbTContext>(options => options.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion));
 //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddTransient<ISysAdmin, SysAdminService>();
+
+
+//初始化日志组件
+var logger = LogManager.Setup().RegisterNLogWeb().GetCurrentClassLogger();
+
+builder.Host.ConfigureLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+}).UseNLog();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder => {

@@ -1,0 +1,27 @@
+2021-12-07 00:04:38.3186 Info Message Template Auto Format enabled
+2021-12-07 00:04:38.3856 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-07 00:04:38.5393 Info Adding target FileTarget(Name=allfile)
+2021-12-07 00:04:38.5393 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-07 00:04:38.5393 Info Adding target NullTarget(Name=blackhole)
+2021-12-07 00:04:38.6361 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=48, FilePath=E:\dotnet6mvc\Aspdotnet6\AlpathAny\bin\Debug\net6.0\NLog.config
+2021-12-07 00:04:38.6676 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: blackhole
+2021-12-07 00:04:38.7070 Info Configuration initialized.
+2021-12-07 00:04:38.7070 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.13.493. Product version: 4.7.13+940d2450ffd50cdf121ad1da5858e607f32e9105. GlobalAssemblyCache: False
+2021-12-07 00:16:53.5250 Info Message Template Auto Format enabled
+2021-12-07 00:16:53.5559 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-07 00:16:53.6763 Info Adding target FileTarget(Name=allfile)
+2021-12-07 00:16:53.6763 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-07 00:16:53.6763 Info Adding target NullTarget(Name=blackhole)
+2021-12-07 00:16:53.7567 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=48, FilePath=E:\dotnet6mvc\Aspdotnet6\AlpathAny\bin\Debug\net6.0\NLog.config
+2021-12-07 00:16:53.7802 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: blackhole
+2021-12-07 00:16:53.8097 Info Configuration initialized.
+2021-12-07 00:16:53.8097 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.13.493. Product version: 4.7.13+940d2450ffd50cdf121ad1da5858e607f32e9105. GlobalAssemblyCache: False
+2021-12-07 00:21:19.1388 Info Message Template Auto Format enabled
+2021-12-07 00:21:19.1774 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-07 00:21:19.4547 Info Adding target FileTarget(Name=allfile)
+2021-12-07 00:21:19.4547 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-07 00:21:19.4547 Info Adding target NullTarget(Name=blackhole)
+2021-12-07 00:21:19.6368 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=48, FilePath=E:\dotnet6mvc\Aspdotnet6\AlpathAny\bin\Debug\net6.0\NLog.config
+2021-12-07 00:21:19.6635 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: blackhole
+2021-12-07 00:21:19.7174 Info Configuration initialized.
+2021-12-07 00:21:19.7174 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.13.493. Product version: 4.7.13+940d2450ffd50cdf121ad1da5858e607f32e9105. GlobalAssemblyCache: False
