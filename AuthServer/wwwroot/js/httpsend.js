@@ -42,10 +42,10 @@ class NewAxios {
         }, (err) => {
             if (err.response) { // 响应错误码处理
                 switch (err.response.status) {
-                    case '403':
+                    case 403:
                         // todo: handler server forbidden error
                         break;
-                    case '400':
+                    case 400:
                         break;
                     // todo: handler other status code
                     default:

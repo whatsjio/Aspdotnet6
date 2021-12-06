@@ -1,6 +1,9 @@
 ﻿
-
-<h1>跳转中。。。</h1>
+<div id="app">
+    <template>
+        <h1>跳转中。。。</h1>
+    </template>
+</div>
 
 <script type="text/javascript">
     let authorl='@ViewBag.Authorurl';
@@ -8,11 +11,72 @@
         console.log(event);
     if (event.origin ===authorl){
         const { lname } = event.data;
-        const { tokens } = event.data;
-        localStorage.setItem(lname,tokens);
+        const { getdata } = event.data;
+        localStorage.setItem(lname,JSON.stringify(getdata));
         localStorage.setItem('keyname',lname);
     }
     },false);
-    
+  var vre = new Vue({
+        el: "#app",
+        data: {
+            redirecturl:'',
+            tocatchurl:''
+        },
+        mounted: function () {
+          //如果不在iframe中
+          if(self==top){
+          this.Toredirect();
+          }
+        },
+        methods: {
+            Toredirect(){
+            //心跳验证接口 如果验证失败则跳转登录页面
+             let configs = {
+                    method: 'get',
+                    url: '/Login/Heartbeat'
+                };
+                httpaxios.request(configs).then(success=>{
+                     iex.notify.success('验证成功！');
+                    //window.location.href=this.redirecturl;
+                },failed=>{
+                    //let errormessage=failed.data.error_description;
+                    //请求失败
+                    iex.notify.error("验证失败");
+                    //window.location.href=this.redirecturl;
+                });
+            },
+           handleSubmit(name) {
+                let configs = {
+                    method: 'post',
+                    url: '/connect/token',
+                    data: {
+                        client_id: 'client',
+                        client_secret: 'secret',
+                        grant_type: 'password',
+                        userName:this.form.userName,
+                        password: this.form.password
+                    },
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    }
+                };
+                httpaxios.request(configs).then(success=>{
+                    //请求成功
+                    if(!this.redirecturl){
+                    iex.notify.warning("未设置跳转地址！");
+                    return;
+                    }
+                    const rectIframe = document.getElementById('rect-iframe');
+                    rectIframe.contentWindow.postMessage({lname: this.form.userName,tokens:success.data.access_token}, this.tocatchurl);
+                    iex.notify.success('登录成功！');
+                    window.location.href=this.redirecturl;
+                },failed=>{
+                    let errormessage=failed.data.error_description;
+                    //请求失败
+                    iex.notify.error("登录失败:"+errormessage);
+                });
+            }
+        }
+    });
 
 </script>

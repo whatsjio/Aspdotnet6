@@ -16,7 +16,7 @@ namespace AlpathAny.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.Authorurl = Program.Appraisalurl;
+            //ViewBag.Authorurl = Program.Appraisalurl;
             return View();
         }
     }
