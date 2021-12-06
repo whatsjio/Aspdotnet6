@@ -140,8 +140,8 @@
                 </Card>
             </div>
         </div>
+        <iframe id="rect-iframe" :src="tocatchurl" style="display:none;"></iframe>
     </template>
-    <iframe id="rect-iframe" :src="tocatchurl" style="display:none;"></iframe>
 </div>
 
 <script type="text/javascript">
@@ -199,7 +199,7 @@
                     return;
                     }
                     const rectIframe = document.getElementById('rect-iframe');
-                    rectIframe.contentWindow.postMessage({lname: this.form.userName,tokens:success.data.access_token}, this.tocatchurl);
+                    rectIframe.contentWindow.postMessage({lname: this.form.userName,getdata:success.data}, this.tocatchurl);
                     iex.notify.success('登录成功！');
                     window.location.href=this.redirecturl;
                 },failed=>{
