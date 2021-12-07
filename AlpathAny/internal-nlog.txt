@@ -25,3 +25,14 @@
 2021-12-07 00:21:19.6635 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: blackhole
 2021-12-07 00:21:19.7174 Info Configuration initialized.
 2021-12-07 00:21:19.7174 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.13.493. Product version: 4.7.13+940d2450ffd50cdf121ad1da5858e607f32e9105. GlobalAssemblyCache: False
+2021-12-07 18:10:08.9307 Info Message Template Auto Format enabled
+2021-12-07 18:10:08.9976 Info Loading assembly: NLog.Web.AspNetCore
+2021-12-07 18:10:09.1033 Info Adding target FileTarget(Name=allfile)
+2021-12-07 18:10:09.1033 Info Adding target FileTarget(Name=ownFile-web)
+2021-12-07 18:10:09.1033 Info Adding target NullTarget(Name=blackhole)
+2021-12-07 18:10:09.1546 Info Validating config: TargetNames=allfile, ownFile-web, ConfigItems=48, FilePath=F:\net6\Aspdotnet6\AlpathAny\bin\Debug\net6.0\NLog.config
+2021-12-07 18:10:09.1661 Warn Unused target detected. Add a rule for this target to the configuration. TargetName: blackhole
+2021-12-07 18:10:09.1915 Info Configuration initialized.
+2021-12-07 18:10:09.1915 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.13.493. Product version: 4.7.13+940d2450ffd50cdf121ad1da5858e607f32e9105. GlobalAssemblyCache: False
+2021-12-07 18:12:43.4088 Info AppDomain Shutting down. Logger closing...
+2021-12-07 18:12:43.4595 Info Logger has been shut down.
