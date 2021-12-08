@@ -1,12 +1,24 @@
-﻿using IdentityModel.Client;
+﻿global using MiddlewareService.Iservice;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace AlpathAny.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly IVerificationService _verificationService;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="verificationService"></param>
+        public LoginController(IVerificationService verificationService)
+        {
+            _verificationService = verificationService;
+        }
         public IActionResult Login()
         {
             return View();
@@ -29,6 +41,18 @@ namespace AlpathAny.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+
+        /// <summary>
+        /// 刷新token
+        /// </summary>
+        /// <param name="token">token</param>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<IActionResult> ResharperToken(string token) {
+            var result = await _verificationService.RefreshToken(token);
+            return new JsonResult(result);
         }
 
 

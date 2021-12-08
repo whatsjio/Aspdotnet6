@@ -21,14 +21,31 @@ namespace DateModel.GenerModel
         public string Result { get; set; }
 
         /// <summary>
+        /// 返回消息
+        /// </summary>
+        public string Message { get; set; }
+
+        /// <summary>
         /// 结果返回
         /// </summary>
         /// <param name="success">是否成功</param>
         /// <param name="result">结果</param>
-        public HttpPostresult(bool success, string result)
+        /// <param name="message">消息</param>
+        public HttpPostresult(bool success, string result,string message)
         {
             Success = success;
             Result = result;
+            Message = message;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="success">是否成功</param>
+        /// <param name="message">消息</param>
+        public HttpPostresult(bool success,string message):this(success,"",message)
+        {
+
         }
     }
 }

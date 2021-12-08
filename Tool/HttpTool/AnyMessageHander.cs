@@ -19,7 +19,7 @@ namespace Tool.HttpTool
         /// <summary>
         /// 日志组件
         /// </summary>
-        private readonly ILogger _logger;
+        private ILogger? _logger;
         /// <summary>
         /// 定制请求头
         /// </summary>
@@ -44,9 +44,8 @@ namespace Tool.HttpTool
         /// 构造函数
         /// </summary>
         /// <param name="httptype">Http请求类型</param>
-        public AnyMessageHander(EHttpType httptype, ILogger logger)
+        public AnyMessageHander(EHttpType httptype)
         {
-            _logger = logger;
             SendMethod = HttpMethod.Get;
             switch (httptype)
             {
@@ -93,6 +92,14 @@ namespace Tool.HttpTool
         #endregion
 
         /// <summary>
+        /// 设置日志记录组件
+        /// </summary>
+        /// <param name="logger"></param>
+        public virtual void SetLog(ILogger logger) {
+            _logger = logger;
+        }
+
+        /// <summary>
         /// 提交请求
         /// </summary>
         /// <param name="request"></param>
@@ -107,7 +114,7 @@ namespace Tool.HttpTool
                 {
                     if (PosthttpContent == null)
                     {
-                        _logger.Info($"{SendMethod.Method}请求异常：未设置Content主体",this);
+                        _logger?.Info($"{SendMethod.Method}请求异常：未设置Content主体", this);
                         var repsonse = new HttpResponseMessage(HttpStatusCode.BadRequest);
                         return Task.FromResult(repsonse);
                     }
@@ -123,7 +130,7 @@ namespace Tool.HttpTool
             }
             catch (Exception e)
             {
-                _logger.Error($"{SendMethod.Method}请求异常:{JsonConvert.SerializeObject(e)}", this);
+                _logger?.Error($"{SendMethod.Method}请求异常:{JsonConvert.SerializeObject(e)}", this);
                 var repsonse = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 return Task.FromResult(repsonse);
             }

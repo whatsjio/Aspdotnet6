@@ -43,6 +43,7 @@ namespace Tool.HttpTool
                 {
                     System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls;
                 }
+                anyMessageHander.SetLog(logger);
                 using (HttpClient httpClient = new HttpClient(anyMessageHander))
                 {
                     //提交方法以管道处理为准
@@ -58,14 +59,14 @@ namespace Tool.HttpTool
                     else
                     {
                         var erroresponCode = $"{methodname}响应{response.StatusCode}失败";
-                        resultmodel.Result = erroresponCode;
+                        resultmodel.Message = erroresponCode;
                         logger.Info($"{errorlog}|响应代码:{erroresponCode}|响应信息:{result}");
                     }
                 }
             }
             catch (Exception e)
             {
-                resultmodel.Result = $"{methodname}请求异常:{e.Message}";
+                resultmodel.Message = $"{methodname}请求异常:{e.Message}";
                 logger.Error($"{errorlog}|{methodname}请求异常:{JsonConvert.SerializeObject(e)}");
             }
             return resultmodel;
