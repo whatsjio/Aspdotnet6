@@ -1,9 +1,10 @@
 ﻿const getBaseUrl = (env) => {
+    let getkey = env || 'production';
     let base = {
         production: 'http://localhost:5025',
         development: 'http://localhost:5025',
         test: 'http://localhost:5025',
-    }[env];
+    }[getkey];
     if (!base) {
         base = '/';
     }
@@ -16,7 +17,7 @@ class NewAxios {
     //构造
     constructor() {
         //设置请求地址配置
-        this.baseURL = getBaseUrl('development');
+        this.baseURL = getBaseUrl();
         //设置超时10秒
         this.timeout = 10000;
         //跨域请求时是否需要使用凭证
@@ -80,6 +81,12 @@ class NewAxios {
         // 配置拦截器，支持根据不同url配置不同的拦截器。
         this.setInterceptors(instance, options.url);
         return instance(config);
+
+    }
+    //刷新token
+    RefreshToken() {
+        let gettoken = GetToken();
+
 
     }
 }
