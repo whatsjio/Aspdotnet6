@@ -24,13 +24,16 @@ class NewAxios {
         this.withCredentials = false;
     }
     // 这里的url可供你针对需要特殊处理的接口路径设置不同拦截器。
-    setInterceptors = (instance, url) => {
+    //setverify 是否添加验证  endverify 是否终止验证请求
+    setInterceptors = (instance,url,setverify=true,endverify=false) => {
+        //请求拦截器
         instance.interceptors.request.use((config) => {
             // 在这里添加loading
             // 配置token
-            //config.headers.AuthorizationToken = 'tests';
-            let gettoken = GetToken();
-            config.headers['Authorization'] = 'Bearer ' + gettoken.access_token;
+            if(setverify){
+                let gettoken = GetToken();
+                config.headers['Authorization'] = 'Bearer ' + gettoken.access_token;
+            }
             //默认返回json格式
             config.responseType = 'json';
             if (config.headers['Content-Type'] && config.headers['Content-Type'] =='application/x-www-form-urlencoded') {
@@ -40,6 +43,8 @@ class NewAxios {
             return config;
         }, err => Promise.reject(err));
 
+
+        //响应拦截器
         instance.interceptors.response.use((response) => {
             // 在这里移除loading
             // todo: 想根据业务需要，对响应结果预先处理的，都放在这里
@@ -68,6 +73,7 @@ class NewAxios {
             }
             return Promise.reject(err);
         });
+
     }
     request(options) {
         // 每次请求都会创建新的axios实例。
@@ -86,8 +92,20 @@ class NewAxios {
     //刷新token
     RefreshToken() {
         let gettoken = GetToken();
-
-
+        let configs = {
+            method: 'get',
+            url: '/Login/ResharperToken',
+            params: {
+                token: gettoken.refresh_token
+              }
+        };
+        this.request(configs).then(success=>{
+            console.log(success);
+       },failed=>{
+            let middleurl = document.getElementById('middlerurl').getAttribute('value');
+            let tourl = document.getElementById('authouuel').getAttribute('value') + '?redirecturl=' + encodeURIComponent(middleurl);
+            location.href = tourl;
+       });
     }
 }
 

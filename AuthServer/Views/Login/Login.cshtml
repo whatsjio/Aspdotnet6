@@ -203,6 +203,7 @@
                     iex.notify.success('登录成功！');
                     window.location.href=this.redirecturl;
                 },failed=>{
+                    console.log(failed.data);
                     let errormessage=failed.data.error_description;
                     //请求失败
                     iex.notify.error("登录失败:"+errormessage);

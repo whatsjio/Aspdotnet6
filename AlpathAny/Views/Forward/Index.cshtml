@@ -6,9 +6,9 @@
 </div>
 
 <script type="text/javascript">
-    let authorl='@ViewBag.Authorurl';
     window.addEventListener('message',function(){
-        console.log(event);
+        let authorl = document.getElementById('authouuel').getAttribute('value');
+     //判断验证地址
     if (event.origin ===authorl){
         const { lname } = event.data;
         const { getdata } = event.data;
@@ -25,7 +25,7 @@
         mounted: function () {
           //如果不在iframe中
           if(self==top){
-          this.Toredirect();
+           //this.Toredirect();
           }
         },
         methods: {
