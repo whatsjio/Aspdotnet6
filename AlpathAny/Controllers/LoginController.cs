@@ -26,7 +26,6 @@ namespace AlpathAny.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
-            _redisService.StringSet("ceshi", "123");
             return View();
         }
 
