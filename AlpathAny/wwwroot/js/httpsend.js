@@ -75,7 +75,9 @@ class NewAxios {
         });
 
     }
-    request(options) {
+
+    //setverify 是否带验证，endverify，endverify是否终止验证校验
+    request(options, setverify = true, endverify = false) {
         // 每次请求都会创建新的axios实例。
         const instance = axios.create();
         const config = { // 将用户传过来的参数与公共配置合并。
@@ -85,9 +87,8 @@ class NewAxios {
             withCredentials: this.withCredentials,
         };
         // 配置拦截器，支持根据不同url配置不同的拦截器。
-        this.setInterceptors(instance, options.url);
+        this.setInterceptors(instance, options.url, setverify, endverify);
         return instance(config);
-
     }
     //刷新token
     RefreshToken() {

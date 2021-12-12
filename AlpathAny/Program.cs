@@ -1,3 +1,4 @@
+global using Tool;
 using AlpathAny;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -5,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using NLog.Web;
 using PlatData;
-using Tool;
 
 var builder = WebApplication.CreateBuilder(args);
 var movieApiKey = builder.Configuration["Movies:ConnectionString"];
