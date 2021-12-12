@@ -1,5 +1,6 @@
 ﻿@{
-   ViewBag.Authorurl=Program.Appraisalurl;
+    ViewBag.Authorurl=Program.AppraisalUrl;
+    ViewBag.MiddleUrl = Program.MiddleUrl;
 }
 <!DOCTYPE html>
 <html>
@@ -61,6 +62,7 @@
 </head>
 <body>
     <div id="authouuel" value="@ViewBag.Authorurl" style="display: none;"></div>
+    <div id="middlerurl" value="@ViewBag.MiddleUrl" style="display: none;"></div>
     @RenderBody()
 </body>
 </html>

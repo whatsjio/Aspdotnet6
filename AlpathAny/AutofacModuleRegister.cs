@@ -1,7 +1,9 @@
 ﻿using Autofac;
+using NLog;
 using OperateService.Iservice;
 using OperateService.Service;
 using System.Reflection;
+using ILogger = NLog.ILogger;
 
 namespace AlpathAny
 {
@@ -21,6 +23,7 @@ namespace AlpathAny
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.Register(c=>LogManager.GetCurrentClassLogger()).As<ILogger>().InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(GetAssemblyByName("OperateService")).Where(a => a.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerDependency();
             builder.RegisterAssemblyTypes(GetAssemblyByName("MiddlewareService")).Where(a => a.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerDependency();
             builder.RegisterBuildCallback(container => _container = (IContainer)container);

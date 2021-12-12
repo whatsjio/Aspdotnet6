@@ -1,12 +1,10 @@
+global using Tool;
 using AlpathAny;
 using Autofac;
-using Autofac.Core;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using OperateService.Iservice;
-using OperateService.ITableService;
-using OperateService.Service;
-using OperateService.TableService;
+using NLog;
+using NLog.Web;
 using PlatData;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,11 +14,27 @@ var connectstr = movieApiKey;
 
 ConfigurationValue = builder.Configuration["testone"];
 //加载鉴权地址
-Appraisalurl = builder.Configuration["Appraisalurl"];
+AppraisalUrl = builder.Configuration["Appraisalurl"];
+MiddleUrl= builder.Configuration["MiddleUrl"];
 
 //builder.Services.AddDbContext<DbTContext>(options => options.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion));
 //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 //builder.Services.AddTransient<ISysAdmin, SysAdminService>();
+
+
+//初始化日志组件
+var logger = LogManager.Setup().RegisterNLogWeb().GetCurrentClassLogger();
+builder.Host.ConfigureLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+}).UseNLog();
+
+//redis配置
+var sectionredis = builder.Configuration.GetSection("Redis:Default");
+string redisconnectionString = sectionredis.GetSection("Connection").Value;
+string redisinstanceName = sectionredis.GetSection("InstanceName").Value;
+int redisdefaultDB = int.Parse(sectionredis.GetSection("DefaultDB").Value ?? "0");
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder => {
@@ -32,6 +46,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder => {
         return optionsBuilder.Options;
     }).InstancePerLifetimeScope();
     builder.RegisterType<DbTContext>().AsSelf().InstancePerLifetimeScope();
+    builder.Register(c=>new RedisHelper(redisconnectionString, redisinstanceName,redisdefaultDB)).AsSelf().InstancePerLifetimeScope();
     //新模块组件注册    
     builder.RegisterModule<AutofacModuleRegister>();
 });
@@ -43,7 +58,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddAuthentication("Bearer").AddIdentityServerAuthentication(x =>
 {
-    x.Authority = Appraisalurl;//鉴权服务地址
+    x.Authority = AppraisalUrl;//鉴权服务地址
     x.RequireHttpsMetadata = false;
     x.ApiName = "api";//鉴权范围
 });
@@ -92,7 +107,7 @@ app.UseEndpoints(endpoints =>
     );
     endpoints.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Forward}/{action=Index}/{id?}");
+        pattern: "{controller=Login}/{action=Login}/{id?}");
 });
 
 app.Run();
@@ -105,5 +120,10 @@ partial class Program {
     /// <summary>
     /// 鉴权地址
     /// </summary>
-    public static string Appraisalurl { get; private set; }
+    public static string AppraisalUrl { get; private set; }
+
+    /// <summary>
+    /// 跳转中间地址
+    /// </summary>
+    public static string MiddleUrl { get; private set; }
 }

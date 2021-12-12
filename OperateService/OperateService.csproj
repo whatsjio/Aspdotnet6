@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DateModel\DateModel.csproj" />
     <ProjectReference Include="..\PlatData\PlatData.csproj" />
+    <ProjectReference Include="..\Tool\Tool.csproj" />
   </ItemGroup>
 
 </Project>

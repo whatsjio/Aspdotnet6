@@ -1,12 +1,29 @@
-﻿using IdentityModel.Client;
+﻿global using MiddlewareService.Iservice;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
+using Tool;
 
 namespace AlpathAny.Controllers
 {
+    [Authorize]
     public class LoginController : Controller
     {
+        private readonly IVerificationService _verificationService;
+        private readonly IDatabase _redisService;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="verificationService"></param>
+        public LoginController(IVerificationService verificationService, RedisHelper redisHelper)
+        {
+            _verificationService = verificationService;
+            _redisService= redisHelper.GetDatabase();
+        }
+
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -21,14 +38,16 @@ namespace AlpathAny.Controllers
             return result;
         }
 
-
         /// <summary>
-        /// 主页
+        /// 刷新token
         /// </summary>
+        /// <param name="token">token</param>
         /// <returns></returns>
-        public IActionResult Index()
-        {
-            return View();
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResharperToken(string token) {
+            var result = await _verificationService.RefreshToken(token);
+            return new JsonResult(result);
         }
 
 
@@ -36,7 +55,7 @@ namespace AlpathAny.Controllers
         /// 心跳验证
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        
         [HttpGet]
         public async Task<IActionResult> Heartbeat()
         {

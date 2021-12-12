@@ -1,4 +1,4 @@
-﻿namespace Tool
+﻿namespace CommonModel
 {
     public class Class1
     {
