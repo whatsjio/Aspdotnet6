@@ -42,8 +42,8 @@ var checkPhone = function (rule, value, callback) {
 //获取token
 function GetToken() {
     //获取全局跳转链接
-    let middleurl = document.getElementById('middlerurl').getAttribute('value');
-    let tourl = document.getElementById('authouuel').getAttribute('value') + '?redirecturl=' + encodeURIComponent(middleurl);
+    let tourl = '@Url.Action("Login","Login")';
+    //document.getElementById('authouuel').getAttribute('value') + '?redirecturl=' + encodeURIComponent(middleurl);
     //获取键名
     let getname = localStorage.getItem('keyname');
     if (getname) {

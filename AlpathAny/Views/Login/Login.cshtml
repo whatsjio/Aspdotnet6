@@ -152,7 +152,6 @@
                 password: ''
             },
             redirecturl:'',
-            tocatchurl:'',
             ruleInline: {
                 userName: [
                     { required: true, message: '请输入用户名', trigger: 'blur' }
@@ -164,10 +163,8 @@
             }
         },
         mounted: function () {
-            let getreurl=getUrlParam('redirecturl');
             //获取跳转地址
-            this.redirecturl=(getreurl&&decodeURIComponent(getreurl))||'';
-            this.tocatchurl=(this.redirecturl&&(new URL(this.redirecturl).origin))||'';
+            this.redirecturl=document.getElementById('defaultrecturl').getAttribute('value');
         },
         methods: {
            handleSubmit(name) {
@@ -179,29 +176,31 @@
                 }
                 let configs = {
                     method: 'post',
-                    url: '/connect/token',
+                    url: '/Login/GetUserToken',
                     data: {
-                        client_id: 'client',
-                        client_secret: 'secret',
-                        grant_type: 'password',
-                        userName:this.form.userName,
+                        username:this.form.userName,
                         password: this.form.password
-                    },
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
                     }
                 };
-                httpaxios.request(configs).then(success=>{
-                    //请求成功
+                httpaxios.request(configs,false,false).then(success=>{
+                    console.log(success.data);
+                    if(success.data.IsSucess){
+                     //请求成功
                     if(!this.redirecturl){
                     iex.notify.warning("未设置跳转地址！");
                     return;
                     }
                     iex.notify.success('登录成功！');
+                    localStorage.setItem(this.form.userName,JSON.stringify(success.data.Data));
+                    localStorage.setItem('keyname',this.form.userName);
                     window.location.href=this.redirecturl;
+                    }
+                    else{
+                    iex.notify.error("登录失败:"+success.data.messageStr);
+                    }
+                  
                 },failed=>{
-                    console.log(failed.data);
-                    let errormessage=failed.data.error_description;
+                    let errormessage=failed.messageStr;
                     //请求失败
                     iex.notify.error("登录失败:"+errormessage);
                 });

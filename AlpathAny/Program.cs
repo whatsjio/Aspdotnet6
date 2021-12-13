@@ -15,7 +15,7 @@ var connectstr = movieApiKey;
 ConfigurationValue = builder.Configuration["testone"];
 //加载鉴权地址
 AppraisalUrl = builder.Configuration["Appraisalurl"];
-MiddleUrl= builder.Configuration["MiddleUrl"];
+DefaultRecturl = builder.Configuration["DefaultRecturl"];
 
 //builder.Services.AddDbContext<DbTContext>(options => options.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion));
 //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -34,6 +34,7 @@ builder.Host.ConfigureLogging(logging =>
 var sectionredis = builder.Configuration.GetSection("Redis:Default");
 string redisconnectionString = sectionredis.GetSection("Connection").Value;
 string redisinstanceName = sectionredis.GetSection("InstanceName").Value;
+string redissyscustomkey = sectionredis.GetSection("SysCustomKey").Value;
 int redisdefaultDB = int.Parse(sectionredis.GetSection("DefaultDB").Value ?? "0");
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -46,7 +47,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder => {
         return optionsBuilder.Options;
     }).InstancePerLifetimeScope();
     builder.RegisterType<DbTContext>().AsSelf().InstancePerLifetimeScope();
-    builder.Register(c=>new RedisHelper(redisconnectionString, redisinstanceName,redisdefaultDB)).AsSelf().InstancePerLifetimeScope();
+    builder.Register(c=>new RedisHelper(redisconnectionString, redisinstanceName, redissyscustomkey,redisdefaultDB)).AsSelf().InstancePerLifetimeScope();
     //新模块组件注册    
     builder.RegisterModule<AutofacModuleRegister>();
 });
@@ -123,7 +124,7 @@ partial class Program {
     public static string AppraisalUrl { get; private set; }
 
     /// <summary>
-    /// 跳转中间地址
+    /// 默认跳转地址
     /// </summary>
-    public static string MiddleUrl { get; private set; }
+    public static string DefaultRecturl { get; private set; }
 }

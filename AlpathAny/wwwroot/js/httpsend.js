@@ -69,7 +69,10 @@ class NewAxios {
             }
             if (!window.navigator.online) { // 断网处理
                 // todo: jump to offline page
-                console.log('异常：连接断开');
+                return Promise.reject({
+                    messageStr: "异常：连接断开",
+                    failresopnse: err
+                });
             }
             return Promise.reject(err);
         });
