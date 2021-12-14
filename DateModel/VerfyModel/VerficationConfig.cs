@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DateModel.ModelHelp;
 
 namespace DateModel.VerfyModel
 {
@@ -41,9 +37,8 @@ namespace DateModel.VerfyModel
         /// </summary>
         static VerficationConfig()
         {
-            var configurationmodel = new ConfigurationManager();
-            ApiHost = configurationmodel["Appraisalurl"];
-            var sectionauth = configurationmodel.GetSection("AuthInf:Default");
+            ApiHost = IndependentConfiguration.GetValue("Appraisalurl");
+            var sectionauth = IndependentConfiguration.GetSelction("AuthInf:Default");
             Clientid= sectionauth.GetSection("Clientid").Value;
             ClientSecret= sectionauth.GetSection("ClientSecret").Value;
         }

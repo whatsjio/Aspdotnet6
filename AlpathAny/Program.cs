@@ -8,9 +8,7 @@ using NLog.Web;
 using PlatData;
 
 var builder = WebApplication.CreateBuilder(args);
-var movieApiKey = builder.Configuration["Movies:ConnectionString"];
-var connectstr = movieApiKey;
-    //builder.Configuration.GetConnectionString("AlanConnection");
+var connectstr = builder.Configuration["Movies:ConnectionString"]; ;
 
 ConfigurationValue = builder.Configuration["testone"];
 //加载鉴权地址
@@ -63,6 +61,7 @@ builder.Services.AddAuthentication("Bearer").AddIdentityServerAuthentication(x =
     x.RequireHttpsMetadata = false;
     x.ApiName = "api";//鉴权范围
 });
+
 
 var app = builder.Build();
 

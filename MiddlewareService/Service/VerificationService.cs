@@ -36,7 +36,7 @@ namespace MiddlewareService.Service
                 {"grant_type","refresh_token"},
                 {"refresh_token",token}
             };
-            hander.SetFormContent(postdata);
+            hander.SetFormContent(postdata, "application/x-www-form-urlencoded");
             var getsend=await HttpHelper.AsyncSend(VerficationConfig.ApiHost + VerficationConfig.RefreshUrl, hander, _logger);
             var result = new Message<string>(getsend.Success, getsend.Message, getsend.Result);
             return result;
@@ -51,6 +51,7 @@ namespace MiddlewareService.Service
         public async Task<Message<Tokenresult>> GetToken(string username,string password) {
             //暂时不用redis缓存
             var hander = new AnyMessageHander(EHttpType.POST);
+        
             var postdata = new Dictionary<string, string>() {
                 {"client_id",VerficationConfig.Clientid},
                 {"client_secret",VerficationConfig.ClientSecret},
@@ -58,7 +59,7 @@ namespace MiddlewareService.Service
                 {"userName",username},
                 {"password",password}
             };
-            hander.SetFormContent(postdata);
+            hander.SetFormContent(postdata, "application/x-www-form-urlencoded");
             var getsend = await HttpHelper.AsyncSend(VerficationConfig.ApiHost + VerficationConfig.Gettoken, hander, _logger);
             if (getsend.Success) {
                 var tokenresult = JsonConvert.DeserializeObject<JToken>(getsend.Result);

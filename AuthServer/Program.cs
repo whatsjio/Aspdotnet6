@@ -1,6 +1,8 @@
 using AuthServer;
 using IdentityServer4.Services;
 using IdentityServer4.Validation;
+using System.Text.Encodings.Web;
+using System.Text.Unicode;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -24,6 +26,9 @@ builder.Services.AddIdentityServer()
 builder.Services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
 builder.Services.AddTransient<IProfileService, ProfileService>();
 
+builder.Services.AddControllersWithViews().AddJsonOptions(options => {
+    options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+});
 // Add services to the container.
 builder.Services.AddRazorPages();
 
