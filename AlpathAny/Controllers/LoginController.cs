@@ -14,14 +14,16 @@ namespace AlpathAny.Controllers
     {
         private readonly IVerificationService _verificationService;
         private readonly RedisHelper _redisHelper;
+        private readonly IHttpClientFactory _clientFactory;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="verificationService"></param>
-        public LoginController(IVerificationService verificationService, RedisHelper redisHelper)
+        public LoginController(IVerificationService verificationService, RedisHelper redisHelper, IHttpClientFactory clientFactory)
         {
             _verificationService = verificationService;
             _redisHelper = redisHelper;
+            _clientFactory = clientFactory;
         }
 
         /// <summary>
@@ -74,7 +76,18 @@ namespace AlpathAny.Controllers
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> GetUserToken([FromBody]Usermodel model) {
-            var result = await _verificationService.GetToken(model.username, model.password);
+            var client = _clientFactory.CreateClient();
+            var tokenResponse =await client.RequestPasswordTokenAsync(new PasswordTokenRequest
+            {
+                Address = VerficationConfig.ApiHost + VerficationConfig.Gettoken,
+                ClientId = VerficationConfig.Clientid,
+                ClientSecret = VerficationConfig.ClientSecret,
+                Scope = "openid api",
+                UserName = model.username,
+                Password = model.password,
+            });
+            var result = tokenResponse;
+            //var result = await _verificationService.GetToken(model.username, model.password);
             return new JsonResult(result);
         }
 

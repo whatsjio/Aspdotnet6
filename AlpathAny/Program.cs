@@ -62,6 +62,8 @@ builder.Services.AddAuthentication("Bearer").AddIdentityServerAuthentication(x =
     x.ApiName = "api";//¼øÈ¨·¶Î§
 });
 
+//AddHttpClient À´×¢²á IHttpClientFactory
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
