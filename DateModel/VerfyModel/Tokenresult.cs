@@ -24,19 +24,5 @@ namespace DateModel.VerfyModel
         /// 刷新token
         /// </summary>
         public string refresh_token { get; set; }
-        /// <summary>
-        /// 鉴权范围
-        /// </summary>
-        public string scope { get; set; }
-
-        /// <summary>
-        /// 错误标识
-        /// </summary>
-        public string error { get; set; }
-
-        /// <summary>
-        /// 错误描述
-        /// </summary>
-        public string error_description { get; set; }
     }
 }

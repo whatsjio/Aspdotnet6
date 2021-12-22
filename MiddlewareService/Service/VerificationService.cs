@@ -1,5 +1,6 @@
 ﻿using DateModel.EnumList;
 using DateModel.VerfyModel;
+using IdentityModel.Client;
 using Microsoft.Extensions.Configuration;
 using MiddlewareService.Iservice;
 using Newtonsoft.Json;
@@ -20,25 +21,27 @@ namespace MiddlewareService.Service
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly RedisHelper _redishelp;
+        private readonly IHttpClientFactory _clientFactory;
 
-        public VerificationService(IConfiguration configuration,ILogger logger, RedisHelper redisHelper)
+        public VerificationService(IConfiguration configuration,ILogger logger, RedisHelper redisHelper, IHttpClientFactory httpClientFactory)
         {
             _configuration = configuration;
             _logger= logger;
             _redishelp = redisHelper;
+            _clientFactory = httpClientFactory;
         }
 
         public async Task<Message<string>> RefreshToken(string token) {
-            var hander = new AnyMessageHander(EHttpType.POST);
-            var postdata = new Dictionary<string, string>() {
-                {"client_id",VerficationConfig.Clientid},
-                {"client_secret",VerficationConfig.ClientSecret},
-                {"grant_type","refresh_token"},
-                {"refresh_token",token}
-            };
-            hander.SetFormContent(postdata, "application/x-www-form-urlencoded");
-            var getsend=await HttpHelper.AsyncSend(VerficationConfig.ApiHost + VerficationConfig.RefreshUrl, hander, _logger);
-            var result = new Message<string>(getsend.Success, getsend.Message, getsend.Result);
+            var client = _clientFactory.CreateClient();
+            var tokenResponse = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
+            {
+                Address = VerficationConfig.ApiHost + VerficationConfig.RefreshUrl,
+                ClientId = VerficationConfig.Clientid,
+                ClientSecret = VerficationConfig.ClientSecret,
+                RefreshToken = token
+            });
+
+            var result = new Message<string>();
             return result;
         }
 
@@ -50,28 +53,21 @@ namespace MiddlewareService.Service
         /// <returns></returns>
         public async Task<Message<Tokenresult>> GetToken(string username,string password) {
             //暂时不用redis缓存
-            var hander = new AnyMessageHander(EHttpType.POST);
-        
-            var postdata = new Dictionary<string, string>() {
-                {"client_id",VerficationConfig.Clientid},
-                {"client_secret",VerficationConfig.ClientSecret},
-                {"grant_type","password"},
-                {"userName",username},
-                {"password",password}
-            };
-            hander.SetFormContent(postdata, "application/x-www-form-urlencoded");
-            var getsend = await HttpHelper.AsyncSend(VerficationConfig.ApiHost + VerficationConfig.Gettoken, hander, _logger);
-            if (getsend.Success) {
-                var tokenresult = JsonConvert.DeserializeObject<JToken>(getsend.Result);
-                var token = tokenresult.GetTrueValue<string>("access_token");
-                //验证是否获取到token
-                if(string.IsNullOrEmpty(token)) return new Message<Tokenresult>(false, tokenresult.GetTrueValue<string>("error_description"));
-                var data = JsonConvert.DeserializeObject<Tokenresult>(getsend.Result);
-                return new Message<Tokenresult>(true, "成功", data);
+            var client = _clientFactory.CreateClient();
+            var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
+            {
+                Address = VerficationConfig.ApiHost + VerficationConfig.Gettoken,
+                ClientId = VerficationConfig.Clientid,
+                ClientSecret = VerficationConfig.ClientSecret,
+                Scope = "openid api",
+                UserName = username,
+                Password = password,
+            });
+            if (tokenResponse.IsError) { 
+            
+            
             }
-            else {
-                return new Message<Tokenresult>(false, getsend.Message);
-            }
+            return new Message<Tokenresult>();
         }
     }
 }

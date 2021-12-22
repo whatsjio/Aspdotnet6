@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  alpathany:
+    image: ${DOCKER_REGISTRY-}alpathany
+    container_name: alpathany
+    ports:
+        - "5025:80"
+    build:
+      context: .
+      dockerfile: AlpathAny/Dockerfile
+  authserver:
+    image: ${DOCKER_REGISTRY-}authserver
+    container_name: authserver
+    ports:
+        - "5006:80"
+    build:
+      context: .
+      dockerfile: AuthServer/Dockerfile
