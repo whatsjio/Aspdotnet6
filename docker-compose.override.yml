@@ -2,20 +2,38 @@ version: '3.4'
 
 services:
   alpathany:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:5025
+    image: ${DOCKER_REGISTRY-}alpathany
+    container_name: alpathany
     ports:
-      - "5025:80"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        - "5025:5025"
+    environment:
+        - ASPNETCORE_URLS=http://+:5025
+    build:
+      context: .
+      dockerfile: AlpathAny/Dockerfile
+    networks: 
+        - my-mvcnet
+    depends_on: 
+            - authserver
+    secrets:
+      - Movies_ServiceApiKey
   authserver:
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=http://+:5006
+    image: ${DOCKER_REGISTRY-}authserver
+    container_name: authserver
     ports:
-      - "5006:80"
-    volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+        - "5006:5006"
+    environment:
+        - ASPNETCORE_URLS=http://+:5006 
+    build:
+      context: .
+      dockerfile: AuthServer/Dockerfile
+    networks:
+        - my-mvcnet
+    secrets:
+      - Movies_ServiceApiKey
+networks:
+    my-mvcnet: 
+        driver: bridge 
+secrets:
+    Movies_ServiceApiKey:
+        file: ./.secrets.txt

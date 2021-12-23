@@ -5,15 +5,23 @@ services:
     image: ${DOCKER_REGISTRY-}alpathany
     container_name: alpathany
     ports:
-        - "5025:80"
+        - "5025:5025"
     build:
       context: .
       dockerfile: AlpathAny/Dockerfile
+    volumes:
+        - type: bind
+          source: .
+          target: /app/build
   authserver:
     image: ${DOCKER_REGISTRY-}authserver
     container_name: authserver
     ports:
-        - "5006:80"
+        - "5006:5006"
     build:
       context: .
       dockerfile: AuthServer/Dockerfile
+    volumes:
+        - type: bind
+          source: .
+          target: /app/build

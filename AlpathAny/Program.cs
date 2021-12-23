@@ -3,12 +3,31 @@ using AlpathAny;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NLog;
 using NLog.Web;
 using PlatData;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectstr = builder.Configuration["Movies:ConnectionString"]; ;
+
+//获取指定配置路径
+builder.Host.ConfigureAppConfiguration(app =>
+{
+    app.AddKeyPerFile(directoryPath:"/run/secrets",optional: true);
+});
+
+string connectstr = null;
+connectstr = builder.Configuration["Movies:ConnectionString"];
+//感知docker密钥信息
+if (connectstr == null) {
+    var sercertstr = builder.Configuration["Movies_ServiceApiKey"];
+    if (!string.IsNullOrEmpty(sercertstr))
+        connectstr = JsonConvert.DeserializeObject<JToken>(sercertstr).GetTrueValue<string>("mysqlconnectstr");
+}
+    
+   
+
 
 ConfigurationValue = builder.Configuration["testone"];
 //加载鉴权地址
