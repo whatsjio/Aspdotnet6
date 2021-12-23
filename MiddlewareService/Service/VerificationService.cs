@@ -63,9 +63,8 @@ namespace MiddlewareService.Service
                 UserName = username,
                 Password = password,
             });
-            if (tokenResponse.IsError) { 
-            
-            
+            if (tokenResponse.IsError) {
+                return new Message<Tokenresult>(false, tokenResponse.ErrorDescription);
             }
             return new Message<Tokenresult>();
         }

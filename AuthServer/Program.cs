@@ -12,7 +12,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       builder =>
                       {
-                          builder.WithOrigins("http://localhost:5006").AllowAnyHeader().AllowAnyMethod();
+                          builder.WithOrigins("http://docker.for.win.localhost:5006").AllowAnyHeader().AllowAnyMethod();
                       });
 });
 
