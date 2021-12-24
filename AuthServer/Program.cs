@@ -7,12 +7,16 @@ using System.Text.Unicode;
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
+
+//加载鉴权地址
+AppraisalUrl = builder.Configuration["Appraisalurl"];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       builder =>
                       {
-                          builder.WithOrigins("http://docker.for.win.localhost:5006").AllowAnyHeader().AllowAnyMethod();
+                          builder.WithOrigins(AppraisalUrl).AllowAnyHeader().AllowAnyMethod();
                       });
 });
 
@@ -63,3 +67,14 @@ app.UseEndpoints(endpoints =>
         pattern: "{controller=Login}/{action=Login}/{id?}");
 });
 app.Run();
+
+
+
+partial class Program
+{
+
+    /// <summary>
+    /// 鉴权地址
+    /// </summary>
+    public static string AppraisalUrl { get; private set; }
+}

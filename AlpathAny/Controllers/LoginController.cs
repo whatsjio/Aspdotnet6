@@ -57,11 +57,12 @@ namespace AlpathAny.Controllers
         /// 刷新token
         /// </summary>
         /// <param name="token">token</param>
+        /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IActionResult> ResharperToken(string token) {
-            var result = await _verificationService.RefreshToken(token);
+        public async Task<IActionResult> ResharperToken(string token,string username) {
+            var result = await _verificationService.RefreshToken(token, username);
             return new JsonResult(result);
         }
 

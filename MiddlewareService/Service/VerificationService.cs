@@ -31,7 +31,21 @@ namespace MiddlewareService.Service
             _clientFactory = httpClientFactory;
         }
 
-        public async Task<Message<string>> RefreshToken(string token) {
+
+        #region 刷新token
+        /// <summary>
+        /// 刷新token
+        /// </summary>
+        /// <param name="token">用户token</param>
+        /// <param name="username">用户名</param>
+        /// <returns></returns>
+        public async Task<Message<UserAccestokenModel>> RefreshToken(string token,string username)
+        {
+            var getinfo =await _redishelp.StringGetAsync<Tokenresult>(username);
+            if(getinfo==null)
+                return new Message<UserAccestokenModel>(false, "找不到用户登录信息");
+            if(getinfo.access_token!= token)
+                return new Message<UserAccestokenModel>(false, "用户token异常");
             var client = _clientFactory.CreateClient();
             var tokenResponse = await client.RequestRefreshTokenAsync(new RefreshTokenRequest
             {
@@ -41,32 +55,52 @@ namespace MiddlewareService.Service
                 RefreshToken = token
             });
 
-            var result = new Message<string>();
+            var result = new Message<UserAccestokenModel>();
             return result;
-        }
+        } 
+        #endregion
 
+
+
+        #region 获取token验证信息
         /// <summary>
         /// 获取token验证信息
         /// </summary>
         /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
-        public async Task<Message<Tokenresult>> GetToken(string username,string password) {
-            //暂时不用redis缓存
+        public async Task<Message<UserAccestokenModel>> GetToken(string username, string password)
+        {
+            //ip防御代码
             var client = _clientFactory.CreateClient();
             var tokenResponse = await client.RequestPasswordTokenAsync(new PasswordTokenRequest
             {
                 Address = VerficationConfig.ApiHost + VerficationConfig.Gettoken,
                 ClientId = VerficationConfig.Clientid,
                 ClientSecret = VerficationConfig.ClientSecret,
-                Scope = "openid api",
+                Scope = "openid api offline_access",
                 UserName = username,
                 Password = password,
             });
-            if (tokenResponse.IsError) {
-                return new Message<Tokenresult>(false, tokenResponse.ErrorDescription);
+            if (tokenResponse.IsError)
+            {
+                return new Message<UserAccestokenModel>(false, tokenResponse.ErrorDescription);
             }
-            return new Message<Tokenresult>();
-        }
+            //存储结果
+            var gettoken = new Tokenresult()
+            {
+                access_token = tokenResponse.AccessToken,
+                expires_in = tokenResponse.ExpiresIn,
+                refresh_token = tokenResponse.RefreshToken
+            };
+            await _redishelp.StringSetAsync(username, gettoken);
+            return new Message<UserAccestokenModel>(true,"", 
+            new UserAccestokenModel()
+            {
+                UserName = username,
+                AccessToken = tokenResponse.AccessToken
+            });
+        } 
+        #endregion
     }
 }

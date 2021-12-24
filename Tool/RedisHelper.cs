@@ -156,6 +156,23 @@ namespace Tool
         }
         #endregion
 
+        #region 异步保存单个对象
+        /// <summary>
+        /// 异步保存单个对象
+        /// </summary>
+        /// <param name="key">键</param>
+        /// <param name="value">值</param>
+        /// <param name="expiry">超时时间(秒) null 不设置时间</param>
+        /// <returns></returns>
+        public async Task<bool> StringSetAsync<T>(string key, T value, TimeSpan? expiry = default(TimeSpan?))
+        {
+            var valuestr=JsonConvert.SerializeObject(value);
+            var result = GetDatabase().StringSetAsync(AddSysCustomKey(key), valuestr, expiry);
+            return await result;
+        }
+        #endregion
+
+
         #region 获取单个key的值
         /// <summary>
         /// 获取单个key的值
@@ -179,6 +196,21 @@ namespace Tool
         {
             var result = GetDatabase().StringGetAsync(AddSysCustomKey(key));
             return await result;
+        }
+        #endregion
+
+        #region 异步获取一个key的对象
+        /// <summary>
+        /// 异步获取一个key的对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<T> StringGetAsync<T>(string key)
+        {
+            var getstr =await StringGetAsync(key);
+            if(string.IsNullOrEmpty(getstr)) return default(T);
+            return JsonConvert.DeserializeObject<T>(getstr);
         }
         #endregion
 

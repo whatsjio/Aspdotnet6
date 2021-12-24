@@ -18,9 +18,10 @@ namespace DateModel.ModelHelp
         /// </summary>
         static IndependentConfiguration() {
             var _enviroment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            string _path = $"appsettings{(_enviroment??"."+ _enviroment)}.json";
+            var envirpath = _enviroment == null ? "" : "." + _enviroment;
+            string _path = $"appsettings{envirpath}.json";
             var conf = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).
-                AddJsonFile("appsettings.json",optional:true,reloadOnChange:true)
+                AddJsonFile(_path, optional:true,reloadOnChange:true)
                 .Build();
             Configuration = conf;
         }
