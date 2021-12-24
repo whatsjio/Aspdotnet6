@@ -17,6 +17,10 @@ services:
             - authserver
     secrets:
       - Movies_ServiceApiKey
+    volumes:
+      - type: bind
+        source: F:/net6/Aspdotnet6/AlpathAny/newlogs
+        target: /app/logs
   authserver:
     image: ${DOCKER_REGISTRY-}authserver
     container_name: authserver
