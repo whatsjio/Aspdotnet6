@@ -60,21 +60,20 @@ class NewAxios {
             return new AxiosData(response.data.IsSucess, response.data.messageStr, response.data.Data);
         }, (err) => {
             let responserr = new AxiosData(false, `请求结果异常:响应代码:${err.response.status}`, err.response);
-            if (err.response) { // 响应错误码处理
-                switch (err.response.status) {
-                    case 401:
-                        //需要刷新token
-                        let verifyresult = Continuerequest(err.response.config);
-                        return Promise.resolve(verifyresult);
-                        break;
-                    case 403:
-                        // todo: handler server forbidden error
-                        break;
-                    case 400:
-                        break;
-                    // todo: handler other status code
-                    default:
-                        break;
+            // 响应错误码处理
+            if (err.response) { 
+                if(err.response.status===401&&!endverify){
+                    let verifyresult = Continuerequest(err.response.config);
+                    return Promise.resolve(verifyresult);
+                }
+                else if(err.response.status===403){
+
+                }
+                else if(err.response.status===400){
+
+                }
+                else if(err.response.status===500){
+
                 }
                 return Promise.resolve(responserr);
             }
@@ -105,8 +104,7 @@ class NewAxios {
     //继续验证请求
     Continuerequest(axiosconfig) {
         RefreshToken().then(success => {
-            
-            request(axiosconfig, true, false).then(contiunecs => {
+            request(axiosconfig, true, true).then(contiunecs => {
                 return contiunecs;
             }).catch(err => {
                 return err;
@@ -128,7 +126,7 @@ class NewAxios {
                     username: requestuser
                 }
             };
-            this.request(configs, false, false).then(success => {
+            this.request(configs, false, true).then(success => {
                 //token刷新成功
                 if (success.IsSucess) {
                     //重设用户凭证

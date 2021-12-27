@@ -1,0 +1,9 @@
+﻿global using Tool;
+global using Microsoft.EntityFrameworkCore;
+global using Newtonsoft.Json;
+global using Newtonsoft.Json.Linq;
+global using NLog;
+global using Autofac;
+global using Autofac.Extensions.DependencyInjection;
+global using NLog.Web;
+global using PlatData; 

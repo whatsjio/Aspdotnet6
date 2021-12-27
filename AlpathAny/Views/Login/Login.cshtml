@@ -191,7 +191,6 @@ ViewBag.Title = "登录";
                     }
                 };
                 httpaxios.request(configs, false, false).then(success => {
-                    console.log(success.data);
                     if (success.IsSucess) {
                         //请求成功
                         if (!this.redirecturl) {
@@ -204,11 +203,11 @@ ViewBag.Title = "登录";
                         window.location.href = this.redirecturl;
                     }
                     else {
-                        iex.notify.error("登录失败:" + success.messageStr);
+                        iex.notify.error("登录失败:" + success.MessageStr);
                     }
 
                 }, failed => {
-                    let errormessage = failed.messageStr;
+                    let errormessage = failed.MessageStr;
                     //请求失败
                     iex.notify.error("登录失败:" + errormessage);
                 });
