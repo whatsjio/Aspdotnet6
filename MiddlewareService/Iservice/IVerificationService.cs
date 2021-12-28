@@ -1,11 +1,4 @@
-﻿global using DateModel;
-using DateModel.VerfyModel;
-using OperateService.Iservice;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace MiddlewareService.Iservice
 {
