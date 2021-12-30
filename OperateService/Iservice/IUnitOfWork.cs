@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OperateService.Iservice
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork:IDisposable
     {
         /// <summary>
         /// 获取实体
@@ -16,10 +16,16 @@ namespace OperateService.Iservice
         DbTContext GetDbContext();
 
         /// <summary>
-        /// 保存
+        /// 异步保存
         /// </summary>
         /// <returns></returns>
         Task<int> SaveChangesAsync();
+
+        /// <summary>
+        /// 同步保存
+        /// </summary>
+        /// <returns></returns>
+        int SaveChanges();
 
     }
 }
