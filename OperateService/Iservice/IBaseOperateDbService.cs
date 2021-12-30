@@ -1,4 +1,5 @@
 ﻿using DateModel;
+using Microsoft.EntityFrameworkCore;
 using PlatData.SysTable;
 using System;
 using System.Collections.Generic;
@@ -32,13 +33,7 @@ namespace OperateService.Iservice
         /// 获取内存中数据列表
         /// </summary>
         /// <returns></returns>
-        IEnumerable<T> Getenumablelist();
-
-        /// <summary>
-        /// 获取数据列表查询
-        /// </summary>
-        /// <returns></returns>
-        IQueryable<T> GetIquerry();
+        IEnumerable<T> Getenumablelist(Expression<Func<T, bool>> whereLambda);
 
         /// <summary>
         /// 删除数据
@@ -61,5 +56,23 @@ namespace OperateService.Iservice
         /// <returns></returns>
         IQueryable<T> GetQuery(Expression<Func<T, bool>> whereLambda);
 
+        /// <summary>
+        /// 数据表
+        /// </summary>
+        DbSet<T> Table { get;}
+
+        /// <summary>
+        /// FirstOrdefault查询
+        /// </summary>
+        /// <param name="whereLambda">表达式</param>
+        /// <returns></returns>
+        T First(Expression<Func<T, bool>> whereLambda);
+
+        /// <summary>
+        /// 无跟踪FirstOrdefault查询
+        /// </summary>
+        /// <param name="whereLambda">表达式</param>
+        /// <returns></returns>
+        T FirstNoTrack(Expression<Func<T, bool>> whereLambda);
     }
 }

@@ -1,5 +1,4 @@
-﻿using OperateService.Iservice;
-namespace OperateService.TableInterface
+﻿namespace OperateService.TableInterface
 {
     /// <summary>
     /// 管理员接口

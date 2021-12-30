@@ -30,7 +30,10 @@ namespace OperateService.Service
             _unitofwork = unitOfWork;
         }
 
-
+        /// <summary>
+        /// 数据表
+        /// </summary>
+        public virtual DbSet<T> Table => _unitofwork.GetDbContext().Set<T>();
 
 
         public async Task<Message> CreateNew(T table)
@@ -61,14 +64,9 @@ namespace OperateService.Service
             return base.MessageDate;
         }
 
-        public IEnumerable<T> Getenumablelist()
+        public IEnumerable<T> Getenumablelist(Expression<Func<T, bool>> whereLambda)
         {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<T> GetIquerry()
-        {
-            throw new NotImplementedException();
+            return _unitofwork.GetDbContext().Set<T>().Where(whereLambda).ToList();
         }
 
         public IQueryable<T> GetQuery(Expression<Func<T, bool>> whereLambda)
@@ -78,7 +76,17 @@ namespace OperateService.Service
 
         public async Task<List<T>> Select(Expression<Func<T, bool>> whereLambda)
         {
-            return await _unitofwork.GetDbContext().Set<T>().Where(whereLambda).ToListAsync();
+            return await _unitofwork.GetDbContext().Set<T>().Where(whereLambda).AsNoTracking().ToListAsync();
+        }
+
+        public T First(Expression<Func<T, bool>> whereLambda)
+        {
+            return _unitofwork.GetDbContext().Set<T>().FirstOrDefault(whereLambda);
+        }
+
+        public T FirstNoTrack(Expression<Func<T, bool>> whereLambda)
+        {
+            return _unitofwork.GetDbContext().Set<T>().AsNoTracking().FirstOrDefault(whereLambda);
         }
 
         public Message Update(T entity)
