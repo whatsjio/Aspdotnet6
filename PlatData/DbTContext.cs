@@ -24,6 +24,8 @@ namespace PlatData
         /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            //将EF详细异常引入try-catch 块，可能会导致性能问题
+            optionsBuilder.EnableDetailedErrors();
             base.OnConfiguring(optionsBuilder);
         }
 
