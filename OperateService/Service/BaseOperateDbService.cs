@@ -103,6 +103,14 @@ namespace OperateService.Service
             return base.MessageDate;
         }
 
+        /// <summary>
+        /// 保存所有track修改
+        /// </summary>
+        /// <returns></returns>
+        public async Task<int> SaveTrackAsync() {
+            return await _unitofwork.SaveChangesAsync();
+        }
+
 
     }
 }

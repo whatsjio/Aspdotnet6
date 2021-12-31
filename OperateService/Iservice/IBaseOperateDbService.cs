@@ -74,5 +74,11 @@ namespace OperateService.Iservice
         /// <param name="whereLambda">表达式</param>
         /// <returns></returns>
         T FirstNoTrack(Expression<Func<T, bool>> whereLambda);
+
+        /// <summary>
+        /// 保存所有track修改
+        /// </summary>
+        /// <returns></returns>
+        Task<int> SaveTrackAsync();
     }
 }

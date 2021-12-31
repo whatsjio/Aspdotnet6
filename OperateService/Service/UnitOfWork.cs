@@ -1,11 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Storage;
-using OperateService.Iservice;
-using PlatData;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace OperateService.Service
 {
@@ -19,7 +13,30 @@ namespace OperateService.Service
         //事务单元
         private IDbContextTransaction _trans = null;
 
+        //当前事务guid
+        private Guid _currenttransactionid => _trans==null?default(Guid): _trans.TransactionId;
 
+        /// <summary>
+        /// 当前事务ID
+        /// </summary>
+        public string CurrentTransactionId=> _currenttransactionid.ToString();
+
+        /// <summary>
+        /// 指示数据库是否支持事务保存点
+        /// </summary>
+        public bool SupportsPoints => _trans!=null? _trans.SupportsSavepoints:false;
+
+
+        /// <summary>
+        ///开启事务后的单元 
+        /// </summary>
+        public IDbContextTransaction ContextTransaction => _trans;
+
+
+        /// <summary>
+        /// DI
+        /// </summary>
+        /// <param name="dbTContext"></param>
         public UnitOfWork(DbTContext dbTContext)
         {
             dbContext = dbTContext;
@@ -38,14 +55,51 @@ namespace OperateService.Service
         }
 
         /// <summary>
+        /// 异步开启事务
+        /// </summary>
+        /// <returns></returns>
+        public async Task BeginTransactionAsync()
+        {
+            _trans =await dbContext.Database.BeginTransactionAsync();
+        }
+        
+
+        /// <summary>
         /// 提交事务
         /// </summary>
         public void Commit() => _trans?.Commit();
 
         /// <summary>
+        /// 异步提交事务
+        /// </summary>
+        /// <returns></returns>
+        public async Task CommitAsync()
+        {
+            await _trans?.CommitAsync();
+        }
+
+
+        /// <summary>
         /// 回滚事务
         /// </summary>
         public void Rollback() => _trans?.Rollback();
+
+        /// <summary>
+        /// 异步回滚事务
+        /// </summary>
+        /// <returns></returns>
+        public async Task RollbackAsync() {
+           await _trans?.RollbackAsync();
+        }
+
+
+        /// <summary>
+        /// 执行原始sql示例
+        /// </summary>
+        //public void exectcomd() {
+        //    dbContext.Set<SysAdmin>().FromSqlInterpolated();
+        //    dbContext.Database.ExecuteSqlInterpolated()
+        //}
 
 
         /// <summary>
