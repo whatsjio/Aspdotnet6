@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace PlatData.SysTable
 {
     /// <summary>
     /// 数据表基类
     /// </summary>
+    //[Index(nameof(CreateTime), IsUnique = true)]
     public abstract class SysObject
     {
         public SysObject()

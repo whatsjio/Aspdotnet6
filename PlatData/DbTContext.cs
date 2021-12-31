@@ -27,7 +27,14 @@ namespace PlatData
             base.OnConfiguring(optionsBuilder);
         }
 
-
+        /// <summary>
+        /// 创建表配置
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            //显示声明表信息
+            //modelBuilder.Entity<SysAdmin>().HasOne(a => a.PassWord);
+        }
 
 
         #region 系统表
