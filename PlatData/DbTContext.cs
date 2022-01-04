@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Logging;
 using PlatData.SysTable;
 
 namespace PlatData

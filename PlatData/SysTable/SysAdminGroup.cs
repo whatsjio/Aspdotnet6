@@ -22,15 +22,14 @@ namespace PlatData.SysTable
         /// </summary>
         public virtual List<SysAdmin> SysAdminList { get; set; }
         /// <summary>
-        /// 当前的菜单
+        /// 关联菜单信息
         /// </summary>
-        public virtual List<SysAdminMenu> MenuList { get; set; }
+        public virtual SysAdminMenu MenuList { get; set; }
         public SysAdminGroup()
         {
             Sort = 99;
             IsDisable = true;
             SysAdminList = new List<SysAdmin>();
-            MenuList = new List<SysAdminMenu>();
         }
     }
 }

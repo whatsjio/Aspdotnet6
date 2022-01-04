@@ -33,7 +33,7 @@ namespace MiddlewareService.Service
         /// 初始化管理组
         /// </summary>
         public async Task InitializeAdmin() {
-            var getadmingroup = _isysAdminGroup.FirstNoTrack(t => t.Name == "超级管理员");
+            var getadmingroup = _isysAdminGroup.First(t => t.Name == "超级管理员");
             if (getadmingroup == null) {
                 var addgroup = new SysAdminGroup()
                 {
@@ -49,9 +49,12 @@ namespace MiddlewareService.Service
                 adminmodel.PassWord = HashHelp.GetPbkdf2("123456", adminmodel.Salt);
                 addgroup.SysAdminList.Add(adminmodel);
                 var message= await _isysAdminGroup.CreateNew(addgroup);
+                getadmingroup = addgroup;
             }
-            var intmenu = _isysMenu.FirstNoTrack(t => t.Title == "系统设置");
-            if (intmenu == null) {
+            if (getadmingroup.MenuList == null) {
+                getadmingroup.MenuList = new SysAdminMenu() {
+                    ByGroup = getadmingroup
+                };
                 SysMenu Menu = new SysMenu()
                 {
                     Title = "系统设置",
@@ -87,9 +90,9 @@ namespace MiddlewareService.Service
                     isDel = true,
                     Name = "sys_setting_menu"
                 });
-                var menuresult = await _isysMenu.CreateNew(Menu);
+                getadmingroup.MenuList.Menus.Add(Menu);
             }
-         
+            await _isysMenu.SaveTrackAsync();
         }
     }
 }
