@@ -25,6 +25,9 @@ namespace PlatData.SysTable
         /// 参数
         /// </summary>
         public string Param { get; set; }
+
+        [Comment("管理员关联外键")]
+        public string? ParentFk { get; set; }
         public virtual SysAdmin Parent { get; set; }
     }
 }

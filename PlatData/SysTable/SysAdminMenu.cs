@@ -22,5 +22,8 @@ namespace PlatData.SysTable
         /// 所拥有的菜单
         /// </summary>
         public virtual List<SysMenu> Menus { get; set; }
+
+        [Comment("关联外键")]
+        public string? SysAdminKey { get; set; }
     }
 }

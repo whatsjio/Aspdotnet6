@@ -12,6 +12,8 @@
         public void Configure(EntityTypeBuilder<SysAdmin> builder)
         {
             builder.Property(b => b.UserName).IsRequired();
+            //组合主键示例
+            //builder.HasKey(c => new { c.UserName, c.Id });
         }
     }
 }

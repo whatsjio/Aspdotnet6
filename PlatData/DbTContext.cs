@@ -7,7 +7,10 @@
     public class DbTContext : DbContext
     {
 
-
+        /// <summary>
+        /// DI实例化
+        /// </summary>
+        /// <param name="options"></param>
         public DbTContext(DbContextOptions<DbTContext> options) : base(options)
         {
 
@@ -33,6 +36,9 @@
             //显示声明表信息
             //modelBuilder.Entity<SysAdmin>().HasOne(a => a.PassWord);
             new SysAdminEntityTypeConfiguration().Configure(modelBuilder.Entity<SysAdmin>());
+            new SysAdminGroupTypeConfiguration().Configure(modelBuilder.Entity<SysAdminGroup>());
+            new SysAdminLogTypeConfiguration().Configure(modelBuilder.Entity<SysAdminLog>());
+            new SysEducationTypeConfiguration().Configure(modelBuilder.Entity<SysEducation>());
             //排除模型例子 也可以使用数据注释 [NotMapped] [NotMapped]也可以在属性上用作排除属性
             //modelBuilder.Ignore<SysAdmin>();
         }
@@ -60,6 +66,11 @@
         /// 用户权限表
         /// </summary>
         public DbSet<SysAdminMenu> SysAdminMenu { get; set; }
+
+        /// <summary>
+        /// EF教学表
+        /// </summary>
+        public DbSet<SysEducation> SysEducation { get; set; }
         #endregion
 
 

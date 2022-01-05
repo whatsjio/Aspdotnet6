@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace PlatData.SysTable
 {
@@ -29,6 +27,12 @@ namespace PlatData.SysTable
         /// 数据创建时间
         /// </summary>
         public DateTime CreateTime { get; set; }
+
+
+        [Comment("上次更新时间")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        [Column(Order = 99)]
+        public DateTime LastUpdated { get; set; }
 
         /// <summary>
         /// 是否逻辑删除 true:是 false:否

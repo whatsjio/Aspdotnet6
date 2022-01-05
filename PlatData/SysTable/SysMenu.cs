@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace PlatData.SysTable
+﻿namespace PlatData.SysTable
 {
     [Table("SysMenu")]
     public class SysMenu: SysObject
@@ -20,7 +18,7 @@ namespace PlatData.SysTable
         /// <summary>
         /// 图标
         /// </summary>
-        public string Icon { get; set; }
+        public string? Icon { get; set; }
         /// <summary>
         /// 父级
         /// </summary>

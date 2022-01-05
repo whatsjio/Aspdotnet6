@@ -13,7 +13,7 @@ namespace PlatData.SysTable
     {
         public string UserName { get; set; }
         public string PassWord { get; set; }
-        public string NickName { get; set; }
+        public string? NickName { get; set; }
 
         [Comment("随机key密码加密使用")]
         [Column(TypeName = "varchar(200)")]
@@ -21,8 +21,8 @@ namespace PlatData.SysTable
         public string Mobile { get; set; }
 
         [MaxLength(200)]
-        public string Avatar { get; set; }
-        public string Sex { get; set; }
+        public string? Avatar { get; set; }
+        public string? Sex { get; set; }
         /// <summary>
         /// true启用；false禁用
         /// </summary>
@@ -35,6 +35,12 @@ namespace PlatData.SysTable
         /// 日志
         /// </summary>
         public virtual List<SysAdminLog> SysAdminLog { get; set; }
+
+        /// <summary>
+        /// 日志关联外键（非主键）
+        /// </summary>
+        public string? SysAdminLogfk { get; set; }
+
         public SysAdmin()
         {
             SysAdminLog = new List<SysAdminLog>();
