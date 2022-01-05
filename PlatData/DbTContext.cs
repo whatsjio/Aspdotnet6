@@ -1,8 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using PlatData.SysTable;
-
-namespace PlatData
+﻿namespace PlatData
 {
 
     /// <summary>
@@ -36,6 +32,9 @@ namespace PlatData
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             //显示声明表信息
             //modelBuilder.Entity<SysAdmin>().HasOne(a => a.PassWord);
+            new SysAdminEntityTypeConfiguration().Configure(modelBuilder.Entity<SysAdmin>());
+            //排除模型例子 也可以使用数据注释 [NotMapped] [NotMapped]也可以在属性上用作排除属性
+            //modelBuilder.Ignore<SysAdmin>();
         }
 
 

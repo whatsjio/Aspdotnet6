@@ -1,18 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlatData.SysTable
 {
+    /// <summary>
+    /// 系统管理员
+    /// </summary>
     [Table("SysAdmin")]
+    //注释
+    [Comment("系统管理员")]
     public class SysAdmin:SysObject
     {
         public string UserName { get; set; }
         public string PassWord { get; set; }
         public string NickName { get; set; }
-        /// <summary>
-        /// 随机key密码加密使用
-        /// </summary>
+
+        [Comment("随机key密码加密使用")]
+        [Column(TypeName = "varchar(200)")]
         public string Salt { get; set; }
         public string Mobile { get; set; }
+
+        [MaxLength(200)]
         public string Avatar { get; set; }
         public string Sex { get; set; }
         /// <summary>

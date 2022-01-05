@@ -13,16 +13,18 @@ namespace AlpathAny.Controllers
     public class LoginController : Controller
     {
         private readonly IVerificationService _verificationService;
+        private readonly ILoginService _loginService;
         private readonly RedisHelper _redisHelper;
        
         /// <summary>
         /// 
         /// </summary>
         /// <param name="verificationService"></param>
-        public LoginController(IVerificationService verificationService, RedisHelper redisHelper)
+        public LoginController(IVerificationService verificationService, RedisHelper redisHelper, ILoginService loginService)
         {
             _verificationService = verificationService;
             _redisHelper = redisHelper;
+            _loginService = loginService;
         }
 
         /// <summary>
@@ -95,6 +97,17 @@ namespace AlpathAny.Controllers
             };
             var result = await Task.FromResult(new JsonResult(resultmodel));
             return result;
+        }
+
+
+        /// <summary>
+        /// 初始化管理组
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task initializeDb() {
+            await _loginService.InitializeAdmin();
         }
 
         /// <summary>

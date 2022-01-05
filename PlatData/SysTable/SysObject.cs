@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PlatData.SysTable
 {
@@ -19,7 +20,11 @@ namespace PlatData.SysTable
         /// 主键
         /// </summary>
         [Key]
+        [Column(Order = 0)]
         public string Id { get; set; }
+
+        //Order定义列排序
+        [Column(Order = 100)]
         /// <summary>
         /// 数据创建时间
         /// </summary>
