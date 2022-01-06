@@ -37,9 +37,9 @@ namespace PlatData.SysTable
         public virtual List<SysAdminLog> SysAdminLog { get; set; }
 
         /// <summary>
-        /// 日志关联外键（非主键）
+        /// 日志关联备用键（必填）类似于主键的备用
         /// </summary>
-        public string? SysAdminLogfk { get; set; }
+        public string SysAdminLogfk { get; set; }
 
         public SysAdmin()
         {

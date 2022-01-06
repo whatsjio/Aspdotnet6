@@ -107,8 +107,17 @@ namespace OperateService.Service
         /// 保存所有track修改
         /// </summary>
         /// <returns></returns>
-        public async Task<int> SaveTrackAsync() {
-            return await _unitofwork.SaveChangesAsync();
+        public async Task<Message<int>> SaveTrackAsync()
+        {
+            try
+            {
+                var savecount = await _unitofwork.SaveChangesAsync();
+                return new Message<int>(savecount);
+            }
+            catch (Exception e)
+            {
+                return new Message<int>(false, e.Message);
+            }
         }
 
 

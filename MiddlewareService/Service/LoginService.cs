@@ -46,6 +46,8 @@ namespace MiddlewareService.Service
                 adminmodel.Avatar = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg";
                 adminmodel.NickName = "超级管理员";
                 adminmodel.Salt= HashHelp.GetPbkdf2Salt();
+                //
+                adminmodel.SysAdminLogfk = Guid.NewGuid().ToString();
                 adminmodel.PassWord = HashHelp.GetPbkdf2("123456", adminmodel.Salt);
                 addgroup.SysAdminList.Add(adminmodel);
                 var message= await _isysAdminGroup.CreateNew(addgroup);

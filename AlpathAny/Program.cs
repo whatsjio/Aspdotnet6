@@ -60,7 +60,7 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder => {
     {
         //≈‰÷√mysql
         var optionsBuilder = new DbContextOptionsBuilder<DbTContext>();
-        optionsBuilder.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion);
+        optionsBuilder.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion, x => x.MigrationsAssembly("PlatData"));
         return optionsBuilder.Options;
     }).InstancePerLifetimeScope();
     builder.RegisterType<DbTContext>().AsSelf().InstancePerLifetimeScope();

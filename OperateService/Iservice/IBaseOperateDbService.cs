@@ -79,6 +79,6 @@ namespace OperateService.Iservice
         /// 保存所有track修改
         /// </summary>
         /// <returns></returns>
-        Task<int> SaveTrackAsync();
+        Task<Message<int>> SaveTrackAsync();
     }
 }

@@ -25,12 +25,20 @@
         /// <summary>
         /// 构造默认成功
         /// </summary>
-        public Message()
+        public Message():this(true, "成功",default(T))
         {
-            MessageStr = "成功";
-            IsSucess = true;
-            Data=default(T);
+
         }
+
+        /// <summary>
+        /// 默认成功
+        /// </summary>
+        /// <param name="data">传递值</param>
+        public Message(T data) : this(true, "成功", data) { 
+
+        }
+
+
 
         /// <summary>
         /// 构造消息内容
@@ -74,10 +82,9 @@
         /// <summary>
         /// 构造默认成功
         /// </summary>
-        public Message()
+        public Message():this(true, "成功")
         {
-            MessageStr = "成功";
-            IsSucess = true;
+
         }
 
         /// <summary>
