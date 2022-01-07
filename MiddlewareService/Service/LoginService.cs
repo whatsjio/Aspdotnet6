@@ -10,22 +10,24 @@ namespace MiddlewareService.Service
         private readonly ISysAdminGroup _isysAdminGroup;
         private readonly ISysAdminMenu _isysAdminMenu;
         private readonly ISysMenu _isysMenu;
+        private readonly RedisHelper _redishelp;
 
         /// <summary>
         /// DI
         /// </summary>
         /// <param name="sysAdmin"></param>
-        public LoginService(ISysAdmin sysAdmin, ISysAdminGroup sysAdminGroup, ISysAdminMenu sysAdminMenu, ISysMenu sysMenu)
+        public LoginService(ISysAdmin sysAdmin, ISysAdminGroup sysAdminGroup, ISysAdminMenu sysAdminMenu, ISysMenu sysMenu, RedisHelper redisHelper)
         {
             _isysadmin=sysAdmin;
             _isysAdminGroup = sysAdminGroup;
             _isysAdminMenu = sysAdminMenu;
             _isysMenu = sysMenu;
+            _redishelp = redisHelper;
         }
 
 
         public void Login(string userName,string password) {
-            
+            //_redishelp.g
 
         }
 
@@ -33,7 +35,7 @@ namespace MiddlewareService.Service
         /// 初始化管理组
         /// </summary>
         public async Task InitializeAdmin() {
-            var getadmingroup = _isysAdminGroup.First(t => t.Name == "超级管理员");
+            var getadmingroup = _isysAdminGroup.FirstNoTrack(t => t.Name == "超级管理员");
             if (getadmingroup == null) {
                 var addgroup = new SysAdminGroup()
                 {
@@ -46,16 +48,14 @@ namespace MiddlewareService.Service
                 adminmodel.Avatar = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg";
                 adminmodel.NickName = "超级管理员";
                 adminmodel.Salt= HashHelp.GetPbkdf2Salt();
-                //
-                adminmodel.SysAdminLogfk = Guid.NewGuid().ToString();
                 adminmodel.PassWord = HashHelp.GetPbkdf2("123456", adminmodel.Salt);
+                //var creatadmin= await _isysadmin.CreateNew(adminmodel);
+                //var creatadminsave= await _isysadmin.SaveTrackAsync();
                 addgroup.SysAdminList.Add(adminmodel);
-                var message= await _isysAdminGroup.CreateNew(addgroup);
-                getadmingroup = addgroup;
-            }
-            if (getadmingroup.MenuList == null) {
-                getadmingroup.MenuList = new SysAdminMenu() {
-                    ByGroup = getadmingroup
+                //adminmodel.Parent = addgroup;
+                addgroup.MenuList = new SysAdminMenu()
+                {
+                    ByGroup = addgroup
                 };
                 SysMenu Menu = new SysMenu()
                 {
@@ -92,9 +92,11 @@ namespace MiddlewareService.Service
                     isDel = true,
                     Name = "sys_setting_menu"
                 });
-                getadmingroup.MenuList.Menus.Add(Menu);
+                addgroup.MenuList.Menus.Add(Menu);
+                var message= await _isysAdminGroup.CreateNew(addgroup);
+                var saveresult = await _isysMenu.SaveTrackAsync();
             }
-            await _isysMenu.SaveTrackAsync();
+           
         }
     }
 }

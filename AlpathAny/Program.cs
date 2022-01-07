@@ -44,7 +44,7 @@ var logger = LogManager.Setup().RegisterNLogWeb().GetCurrentClassLogger();
 builder.Host.ConfigureLogging(logging =>
 {
     logging.ClearProviders();
-    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
 }).UseNLog();
 
 //redis配置
@@ -87,11 +87,11 @@ builder.Services.AddHttpClient();
 var app = builder.Build();
 
 //初始化数据库
-using (var scope = AutofacModuleRegister.GetContainer().BeginLifetimeScope())
-{
-    var dbint= scope.Resolve<DbTContext>();
-    dbint.Database.EnsureCreated();
-}
+//using (var scope = AutofacModuleRegister.GetContainer().BeginLifetimeScope())
+//{
+//    var dbint= scope.Resolve<DbTContext>();
+//    dbint.Database.EnsureCreated();
+//}
 
 
 //第一次Run初始化数据库

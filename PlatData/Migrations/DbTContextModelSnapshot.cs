@@ -36,9 +36,6 @@ namespace PlatData.Migrations
                     b.Property<bool>("GcRecord")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("IsDisable")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime(6)")
@@ -46,18 +43,17 @@ namespace PlatData.Migrations
                         .HasComment("上次更新时间");
 
                     b.Property<string>("Mobile")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("NickName")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ParentId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("PassWord")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Salt")
                         .IsRequired()
@@ -65,21 +61,22 @@ namespace PlatData.Migrations
                         .HasComment("随机key密码加密使用");
 
                     b.Property<string>("Sex")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(10)");
 
                     b.Property<string>("SysAdminLogfk")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("SysAdmin", (string)null);
+                    b.ToTable("SysAdmin");
 
                     b.HasComment("系统管理员");
                 });
@@ -97,9 +94,6 @@ namespace PlatData.Migrations
                     b.Property<bool>("GcRecord")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool>("IsDisable")
-                        .HasColumnType("tinyint(1)");
-
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime(6)")
@@ -108,14 +102,16 @@ namespace PlatData.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(200)")
+                        .HasComment("名称");
 
                     b.Property<int>("Sort")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasComment("排序");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SysAdminGroup", (string)null);
+                    b.ToTable("SysAdminGroup");
                 });
 
             modelBuilder.Entity("PlatData.SysTable.SysAdminLog", b =>
@@ -125,19 +121,15 @@ namespace PlatData.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("Action")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ActionName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Controller")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ControllerName")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("CreateTime")
@@ -148,7 +140,6 @@ namespace PlatData.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("IP")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime>("LastUpdated")
@@ -158,7 +149,6 @@ namespace PlatData.Migrations
                         .HasComment("上次更新时间");
 
                     b.Property<string>("Param")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("ParentFk")
@@ -166,22 +156,19 @@ namespace PlatData.Migrations
                         .HasComment("管理员关联外键");
 
                     b.Property<string>("Path")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Remark")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Type")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentFk");
 
-                    b.ToTable("SysAdminLog", (string)null);
+                    b.ToTable("SysAdminLog");
                 });
 
             modelBuilder.Entity("PlatData.SysTable.SysAdminMenu", b =>
@@ -212,7 +199,7 @@ namespace PlatData.Migrations
                     b.HasIndex("SysAdminKey")
                         .IsUnique();
 
-                    b.ToTable("SysAdminMenu", (string)null);
+                    b.ToTable("SysAdminMenu");
                 });
 
             modelBuilder.Entity("PlatData.SysTable.SysEducation", b =>
@@ -242,7 +229,7 @@ namespace PlatData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SysEducation", (string)null);
+                    b.ToTable("SysEducation");
 
                     b.HasComment("EF教学表");
                 });
@@ -261,7 +248,7 @@ namespace PlatData.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Icon")
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<DateTime>("LastUpdated")
                         .ValueGeneratedOnAddOrUpdate()
@@ -271,10 +258,9 @@ namespace PlatData.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("ParentId")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("Sort")
@@ -285,11 +271,10 @@ namespace PlatData.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(80)");
 
                     b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("isDel")
                         .HasColumnType("tinyint(1)");
@@ -300,7 +285,7 @@ namespace PlatData.Migrations
 
                     b.HasIndex("SysAdminMenuId");
 
-                    b.ToTable("SysMenu", (string)null);
+                    b.ToTable("SysMenu");
                 });
 
             modelBuilder.Entity("PlatData.SysTable.SysAdmin", b =>
@@ -317,8 +302,7 @@ namespace PlatData.Migrations
                     b.HasOne("PlatData.SysTable.SysAdmin", "Parent")
                         .WithMany("SysAdminLog")
                         .HasForeignKey("ParentFk")
-                        .HasPrincipalKey("SysAdminLogfk")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasPrincipalKey("SysAdminLogfk");
 
                     b.Navigation("Parent");
                 });
@@ -336,9 +320,7 @@ namespace PlatData.Migrations
                 {
                     b.HasOne("PlatData.SysTable.SysMenu", "Parent")
                         .WithMany("ChildrenList")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ParentId");
 
                     b.HasOne("PlatData.SysTable.SysAdminMenu", null)
                         .WithMany("Menus")

@@ -18,7 +18,7 @@ namespace PlatData.SysTable
         /// 主键
         /// </summary>
         [Key]
-        [Column(Order = 0)]
+        [Column(Order = 0,TypeName = "varchar(255)")]
         public string Id { get; set; }
 
         //Order定义列排序

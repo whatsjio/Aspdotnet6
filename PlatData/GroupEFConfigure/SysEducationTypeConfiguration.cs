@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PlatData.GroupEFConfigure
 {
-    public class SysEducationTypeConfiguration : IEntityTypeConfiguration<SysEducation>
+    internal class SysEducationTypeConfiguration : IEntityTypeConfiguration<SysEducation>
     {
         public void Configure(EntityTypeBuilder<SysEducation> builder)
         {

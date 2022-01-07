@@ -8,15 +8,16 @@ namespace PlatData.SysTable
         /// <summary>
         /// 名称
         /// </summary>
+        [Comment("名称")]
+        [Column(TypeName = "nvarchar(200)")]
         public string Name { get; set; }
         /// <summary>
         /// 排序
         /// </summary>
+        [Comment("排序")]
         public int Sort { get; set; }
-        /// <summary>
-        /// true启用；false禁用
-        /// </summary>
-        public bool IsDisable { get; set; }
+
+
         /// <summary>
         /// 关联的客户
         /// </summary>
@@ -28,7 +29,6 @@ namespace PlatData.SysTable
         public SysAdminGroup()
         {
             Sort = 99;
-            IsDisable = true;
             SysAdminList = new List<SysAdmin>();
         }
     }

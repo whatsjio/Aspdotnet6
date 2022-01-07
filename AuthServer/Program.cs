@@ -31,7 +31,7 @@ var logger = LogManager.Setup().RegisterNLogWeb().GetCurrentClassLogger();
 builder.Host.ConfigureLogging(logging =>
 {
     logging.ClearProviders();
-    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
 }).UseNLog();
 
 //redis≈‰÷√

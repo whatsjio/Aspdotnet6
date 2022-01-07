@@ -1,7 +1,7 @@
 ﻿namespace PlatData.GroupEFConfigure
 {
 
-    public class SysAdminGroupTypeConfiguration : IEntityTypeConfiguration<SysAdminGroup>
+    internal class SysAdminGroupTypeConfiguration : IEntityTypeConfiguration<SysAdminGroup>
     {
 
         public void Configure(EntityTypeBuilder<SysAdminGroup> builder)

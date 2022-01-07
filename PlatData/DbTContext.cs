@@ -39,6 +39,7 @@
             new SysAdminGroupTypeConfiguration().Configure(modelBuilder.Entity<SysAdminGroup>());
             new SysAdminLogTypeConfiguration().Configure(modelBuilder.Entity<SysAdminLog>());
             new SysEducationTypeConfiguration().Configure(modelBuilder.Entity<SysEducation>());
+            new SysMenuEntityTypeConfiguration().Configure(modelBuilder.Entity<SysMenu>());
             //排除模型例子 也可以使用数据注释 [NotMapped] [NotMapped]也可以在属性上用作排除属性
             //modelBuilder.Ignore<SysAdmin>();
         }
