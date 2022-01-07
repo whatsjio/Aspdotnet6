@@ -53,7 +53,7 @@ namespace AuthServer
                 RefreshTokenExpiration=TokenExpiration.Sliding,
                 SlidingRefreshTokenLifetime=60*15, //设置RefreshToken的滑动过期时间
                 AbsoluteRefreshTokenLifetime=0, //设置RefreshToken的绝对过期时间
-                RefreshTokenUsage=TokenUsage.OneTimeOnly,//RefreshToken可以反复使用 OneTime-只能使用一次。刷新时会颁发新的RefreshToken
+                RefreshTokenUsage=TokenUsage.ReUse,//RefreshToken可以反复使用 OneTime-只能使用一次。刷新时会颁发新的RefreshToken
                 UpdateAccessTokenClaimsOnRefresh=true,  //是否在使用RefreshToken刷新AccessToken的时候，是否返回一个新的AccessToken并更新其声明(Claims)
                 AllowedScopes={
                     "api",

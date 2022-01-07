@@ -22,7 +22,7 @@ namespace AlpathAny
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.Register(c=>LogManager.GetCurrentClassLogger()).As<ILogger>().InstancePerLifetimeScope();
             builder.RegisterAssemblyTypes(GetAssemblyByName("OperateService")).Where(a => a.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerDependency();
             builder.RegisterAssemblyTypes(GetAssemblyByName("MiddlewareService")).Where(a => a.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerDependency();

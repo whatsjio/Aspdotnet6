@@ -30,8 +30,8 @@ namespace Tool.HttpTool
             var verifyheadstr = anyMessageHander.HeaderDictionary != null ? JsonConvert.SerializeObject(anyMessageHander.HeaderDictionary) : "";
             var methodname = anyMessageHander.SendMethod.Method;
             var asyncguid = Guid.NewGuid().ToString();
-            var errorlog = $"{asyncguid}|异步{methodname}请求:{name}|请求详情:url:{url}|头部参数:{verifyheadstr}|提交参数{anyMessageHander.Postdata}";
-            logger.Info($"{asyncguid}|异步{methodname}请求:{name}|请求详情:url:{url}|头部参数:{verifyheadstr}");
+            var sublog = $"{asyncguid}|异步{methodname}请求:{name}|请求详情:url:{url}|头部参数:{verifyheadstr}|提交参数{anyMessageHander.Postdata}";
+            logger.Info(sublog);
             try
             {
                 if (url.StartsWith("https"))
@@ -55,14 +55,14 @@ namespace Tool.HttpTool
                     {
                         var erroresponCode = $"{methodname}响应{response.StatusCode}失败";
                         resultmodel.Message = erroresponCode;
-                        logger.Info($"{errorlog}|响应代码:{erroresponCode}|响应信息:{result}");
+                        logger.Info($"{sublog}|响应代码:{erroresponCode}|响应信息:{result}");
                     }
                 }
             }
             catch (Exception e)
             {
                 resultmodel.Message = $"{methodname}请求异常:{e.Message}";
-                logger.Error($"{errorlog}|{methodname}请求异常:{JsonConvert.SerializeObject(e)}");
+                logger.Error($"{sublog}|{methodname}请求异常:{JsonConvert.SerializeObject(e)}");
             }
             return resultmodel;
         }

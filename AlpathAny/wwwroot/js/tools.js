@@ -41,24 +41,29 @@ var checkPhone = function (rule, value, callback) {
 
 //获取token
 function GetToken() {
-    //获取全局跳转链接
-    let middleurl = document.getElementById('middlerurl').getAttribute('value');
-    let tourl = document.getElementById('authouuel').getAttribute('value') + '?redirecturl=' + encodeURIComponent(middleurl);
+    //document.getElementById('authouuel').getAttribute('value') + '?redirecturl=' + encodeURIComponent(middleurl);
     //获取键名
     let getname = localStorage.getItem('keyname');
     if (getname) {
         let getdata = localStorage.getItem(getname);
-        getdata || (location.href = tourl);
+        getdata || (tologin());
         try {
             let jdata = JSON.parse(getdata);
-            return { access_token: jdata.access_token, refresh_token: jdata.refresh_token };
+            return { access_token: jdata.AccessToken, username: jdata.UserName };
         }
         catch (e) {
             alert('获取token异常' + e);
-            location.href = tourl;
+            tologin();
         }
     }
     else {
-        location.href = tourl;
+        tologin();
     }
+}
+
+//跳转至登录页
+function tologin() {
+    //获取全局跳转链接
+    let tourl = '@Url.Action("Login","Login")';
+    location.href = tourl;
 }

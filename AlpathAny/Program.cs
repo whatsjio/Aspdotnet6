@@ -3,19 +3,36 @@ using AlpathAny;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NLog;
 using NLog.Web;
 using PlatData;
 
 var builder = WebApplication.CreateBuilder(args);
-var movieApiKey = builder.Configuration["Movies:ConnectionString"];
-var connectstr = movieApiKey;
-    //builder.Configuration.GetConnectionString("AlanConnection");
+
+//获取指定配置路径
+builder.Host.ConfigureAppConfiguration(app =>
+{
+    app.AddKeyPerFile(directoryPath:"/run/secrets",optional: true);
+});
+
+string connectstr = null;
+connectstr = builder.Configuration["Movies:ConnectionString"];
+//感知docker密钥信息
+if (connectstr == null) {
+    var sercertstr = builder.Configuration["Movies_ServiceApiKey"];
+    if (!string.IsNullOrEmpty(sercertstr))
+        connectstr = JsonConvert.DeserializeObject<JToken>(sercertstr).GetTrueValue<string>("mysqlconnectstr");
+}
+    
+   
+
 
 ConfigurationValue = builder.Configuration["testone"];
 //加载鉴权地址
 AppraisalUrl = builder.Configuration["Appraisalurl"];
-MiddleUrl= builder.Configuration["MiddleUrl"];
+DefaultRecturl = builder.Configuration["DefaultRecturl"];
 
 //builder.Services.AddDbContext<DbTContext>(options => options.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion));
 //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -27,13 +44,14 @@ var logger = LogManager.Setup().RegisterNLogWeb().GetCurrentClassLogger();
 builder.Host.ConfigureLogging(logging =>
 {
     logging.ClearProviders();
-    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
 }).UseNLog();
 
 //redis配置
 var sectionredis = builder.Configuration.GetSection("Redis:Default");
 string redisconnectionString = sectionredis.GetSection("Connection").Value;
 string redisinstanceName = sectionredis.GetSection("InstanceName").Value;
+string redissyscustomkey = sectionredis.GetSection("SysCustomKey").Value;
 int redisdefaultDB = int.Parse(sectionredis.GetSection("DefaultDB").Value ?? "0");
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -42,11 +60,11 @@ builder.Host.ConfigureContainer<ContainerBuilder>(builder => {
     {
         //配置mysql
         var optionsBuilder = new DbContextOptionsBuilder<DbTContext>();
-        optionsBuilder.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion);
+        optionsBuilder.UseMySql(connectstr, MySqlServerVersion.LatestSupportedServerVersion, x => x.MigrationsAssembly("PlatData"));
         return optionsBuilder.Options;
     }).InstancePerLifetimeScope();
     builder.RegisterType<DbTContext>().AsSelf().InstancePerLifetimeScope();
-    builder.Register(c=>new RedisHelper(redisconnectionString, redisinstanceName,redisdefaultDB)).AsSelf().InstancePerLifetimeScope();
+    builder.Register(c=>new RedisHelper(redisconnectionString, redisinstanceName, redissyscustomkey,redisdefaultDB)).AsSelf().InstancePerLifetimeScope();
     //新模块组件注册    
     builder.RegisterModule<AutofacModuleRegister>();
 });
@@ -63,14 +81,17 @@ builder.Services.AddAuthentication("Bearer").AddIdentityServerAuthentication(x =
     x.ApiName = "api";//鉴权范围
 });
 
+//AddHttpClient 来注册 IHttpClientFactory
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 //初始化数据库
-using (var scope = AutofacModuleRegister.GetContainer().BeginLifetimeScope())
-{
-    var dbint= scope.Resolve<DbTContext>();
-    dbint.Database.EnsureCreated();
-}
+//using (var scope = AutofacModuleRegister.GetContainer().BeginLifetimeScope())
+//{
+//    var dbint= scope.Resolve<DbTContext>();
+//    dbint.Database.EnsureCreated();
+//}
 
 
 //第一次Run初始化数据库
@@ -123,7 +144,7 @@ partial class Program {
     public static string AppraisalUrl { get; private set; }
 
     /// <summary>
-    /// 跳转中间地址
+    /// 默认跳转地址
     /// </summary>
-    public static string MiddleUrl { get; private set; }
+    public static string DefaultRecturl { get; private set; }
 }

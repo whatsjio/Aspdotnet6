@@ -22,10 +22,25 @@ namespace OperateService.Service
         /// 消息信息
         /// </summary>
         public virtual Message MessageDate { get => _message; set => _message=value; }
+      
 
         public BaseService()
         {
             _message=new Message();
+        }
+    }
+
+    public abstract class BaseService<T> : IBaseService<T> 
+    {
+        private Message<T> _gemessage;
+
+        /// <summary>
+        /// 通用消息
+        /// </summary>
+        public virtual Message<T> GeMessageDate { get => _gemessage; set => _gemessage = value; }
+        public BaseService()
+        {
+            _gemessage = new Message<T>();
         }
     }
 }

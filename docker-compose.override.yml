@@ -1,0 +1,43 @@
+version: '3.4'
+
+services:
+  alpathany:
+    image: ${DOCKER_REGISTRY-}alpathany
+    container_name: alpathany
+    ports:
+        - "5025:5025"
+    environment:
+        - ASPNETCORE_URLS=http://+:5025
+    build:
+      context: .
+      dockerfile: AlpathAny/Dockerfile
+    networks: 
+        - my-mvcnet
+    depends_on: 
+            - authserver
+    secrets:
+      - Movies_ServiceApiKey
+    volumes:
+      - type: bind
+        source: F:/net6/Aspdotnet6/AlpathAny/newlogs
+        target: /app/logs
+  authserver:
+    image: ${DOCKER_REGISTRY-}authserver
+    container_name: authserver
+    ports:
+        - "5006:5006"
+    environment:
+        - ASPNETCORE_URLS=http://+:5006 
+    build:
+      context: .
+      dockerfile: AuthServer/Dockerfile
+    networks:
+        - my-mvcnet
+    secrets:
+      - Movies_ServiceApiKey
+networks:
+    my-mvcnet: 
+        driver: bridge 
+secrets:
+    Movies_ServiceApiKey:
+        file: ./.secrets.txt

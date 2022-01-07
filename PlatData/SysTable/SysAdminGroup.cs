@@ -8,29 +8,28 @@ namespace PlatData.SysTable
         /// <summary>
         /// 名称
         /// </summary>
+        [Comment("名称")]
+        [Column(TypeName = "nvarchar(200)")]
         public string Name { get; set; }
         /// <summary>
         /// 排序
         /// </summary>
+        [Comment("排序")]
         public int Sort { get; set; }
-        /// <summary>
-        /// true启用；false禁用
-        /// </summary>
-        public bool IsDisable { get; set; }
+
+
         /// <summary>
         /// 关联的客户
         /// </summary>
         public virtual List<SysAdmin> SysAdminList { get; set; }
         /// <summary>
-        /// 当前的菜单
+        /// 关联菜单信息
         /// </summary>
-        public virtual List<SysAdminMenu> MenuList { get; set; }
+        public virtual SysAdminMenu MenuList { get; set; }
         public SysAdminGroup()
         {
             Sort = 99;
-            IsDisable = true;
             SysAdminList = new List<SysAdmin>();
-            MenuList = new List<SysAdminMenu>();
         }
     }
 }

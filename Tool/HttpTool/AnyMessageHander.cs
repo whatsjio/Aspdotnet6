@@ -18,7 +18,7 @@ namespace Tool.HttpTool
         /// <summary>
         /// 定制请求头
         /// </summary>
-        public Dictionary<string, string> HeaderDictionary { get; }
+        public Dictionary<string, string> HeaderDictionary { get; set; }
 
         /// <summary>
         /// 提交数据
@@ -64,10 +64,15 @@ namespace Tool.HttpTool
         /// 设置httpcontentForm提交方式
         /// </summary>
         /// <param name="valuecollection"></param>
-        public virtual void SetFormContent(Dictionary<string, string> valuecollection)
+        /// <param name="contentType">提交类型</param>
+        public virtual void SetFormContent(Dictionary<string, string> valuecollection, string contentType)
         {
             Postdata = JsonConvert.SerializeObject(valuecollection);
             PosthttpContent = new FormUrlEncodedContent(valuecollection);
+            PosthttpContent.Headers.ContentType = new MediaTypeHeaderValue(contentType)
+            {
+                CharSet = "utf-8"
+            };
         }
         #endregion
 

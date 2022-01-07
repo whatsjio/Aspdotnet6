@@ -14,6 +14,14 @@ namespace OperateService.Iservice
         /// </summary>
         public Message MessageDate { get; set; }
 
-
+      
     }
+
+    public interface IBaseService<T> {
+        /// <summary>
+        /// 通用接口消息
+        /// </summary>
+        Message<T> GeMessageDate { get; set; }
+    }
+
 }
